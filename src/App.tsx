@@ -18,7 +18,6 @@ import { StorageService } from './services/storage';
 import { User } from './types';
 
 export default function App() {
-  const [isReady, setIsReady] = useState(false);
   const [currentUser, setCurrentUser] = useState<User>(() => {
     StorageService.init();
     return StorageService.getCurrentUser();
@@ -26,12 +25,6 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<TabKey>('monthly'); // default to monthly summary matching Excel screenshot
   const [currentMonthKey, setCurrentMonthKey] = useState<string>('2569-10'); // ตุลาคม 2569
   const [refreshKey, setRefreshKey] = useState(0);
-
-  useEffect(() => {
-    StorageService.init();
-    setCurrentUser(StorageService.getCurrentUser());
-    setIsReady(true);
-  }, []);
 
   const handleRefresh = () => {
     setRefreshKey(prev => prev + 1);
@@ -47,16 +40,6 @@ export default function App() {
     setActiveTab('monthly');
   };
 
-  if (!isReady) {
-    return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-        <div className="text-center space-y-3">
-          <div className="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto" />
-          <p className="text-sm font-semibold text-slate-700">กำลังโหลดระบบติดตามยอดส่งเบิก สปสช. ...</p>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col font-['Sarabun',sans-serif] selection:bg-blue-100 selection:text-blue-900">

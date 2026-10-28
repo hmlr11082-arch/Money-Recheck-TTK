@@ -25,11 +25,11 @@ const STORAGE_KEYS = {
 
 export const MOCK_USERS: User[] = [
   {
-    id: 'user-rec-1',
-    name: 'นายสมชาย ใจดี',
-    role: 'recorder',
-    roleTitle: 'เจ้าหน้าที่บันทึกข้อมูล',
-    department: 'งานเวชระเบียนและข้อมูลสุขภาพ',
+    id: 'user-adm-natthanan',
+    name: 'นางสาวณัฐนันท์ สีตะ',
+    role: 'admin',
+    roleTitle: 'เจ้าหน้าที่บันทึกข้อมูล (สิทธิ์ Admin)',
+    department: 'งานเวชระเบียนและข้อมูลสุขภาพ / กลุ่มงานประกันสุขภาพ',
   },
   {
     id: 'user-chk-1',
@@ -273,53 +273,53 @@ const SEED_ROUNDS: ServiceRound[] = [
 // Service 1 (ฝากครรภ์) in round 4 has 13 people, all other services 0
 const SEED_ENTRIES: ServiceEntry[] = [
   // October 2569
-  { id: 'ent-1', roundId: 'rnd-2569-10-1', serviceId: 'srv-1', count: 0, recordedBy: 'นายสมชาย ใจดี', recordedAt: '2026-10-08T10:00:00' },
-  { id: 'ent-2', roundId: 'rnd-2569-10-1', serviceId: 'srv-2', count: 0, recordedBy: 'นายสมชาย ใจดี', recordedAt: '2026-10-08T10:00:00' },
-  { id: 'ent-3', roundId: 'rnd-2569-10-1', serviceId: 'srv-3', count: 0, recordedBy: 'นายสมชาย ใจดี', recordedAt: '2026-10-08T10:00:00' },
-  { id: 'ent-4', roundId: 'rnd-2569-10-1', serviceId: 'srv-4', count: 0, recordedBy: 'นายสมชาย ใจดี', recordedAt: '2026-10-08T10:00:00' },
-  { id: 'ent-5', roundId: 'rnd-2569-10-1', serviceId: 'srv-5', count: 0, recordedBy: 'นายสมชาย ใจดี', recordedAt: '2026-10-08T10:00:00' },
-  { id: 'ent-6', roundId: 'rnd-2569-10-1', serviceId: 'srv-6', count: 0, recordedBy: 'นายสมชาย ใจดี', recordedAt: '2026-10-08T10:00:00' },
-  { id: 'ent-7', roundId: 'rnd-2569-10-1', serviceId: 'srv-7', count: 0, recordedBy: 'นายสมชาย ใจดี', recordedAt: '2026-10-08T10:00:00' },
+  { id: 'ent-1', roundId: 'rnd-2569-10-1', serviceId: 'srv-1', count: 0, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-10-08T10:00:00' },
+  { id: 'ent-2', roundId: 'rnd-2569-10-1', serviceId: 'srv-2', count: 0, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-10-08T10:00:00' },
+  { id: 'ent-3', roundId: 'rnd-2569-10-1', serviceId: 'srv-3', count: 0, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-10-08T10:00:00' },
+  { id: 'ent-4', roundId: 'rnd-2569-10-1', serviceId: 'srv-4', count: 0, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-10-08T10:00:00' },
+  { id: 'ent-5', roundId: 'rnd-2569-10-1', serviceId: 'srv-5', count: 0, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-10-08T10:00:00' },
+  { id: 'ent-6', roundId: 'rnd-2569-10-1', serviceId: 'srv-6', count: 0, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-10-08T10:00:00' },
+  { id: 'ent-7', roundId: 'rnd-2569-10-1', serviceId: 'srv-7', count: 0, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-10-08T10:00:00' },
 
-  { id: 'ent-8', roundId: 'rnd-2569-10-2', serviceId: 'srv-1', count: 0, recordedBy: 'นายสมชาย ใจดี', recordedAt: '2026-10-15T10:00:00' },
-  { id: 'ent-9', roundId: 'rnd-2569-10-2', serviceId: 'srv-2', count: 0, recordedBy: 'นายสมชาย ใจดี', recordedAt: '2026-10-15T10:00:00' },
-  { id: 'ent-10', roundId: 'rnd-2569-10-2', serviceId: 'srv-3', count: 0, recordedBy: 'นายสมชาย ใจดี', recordedAt: '2026-10-15T10:00:00' },
-  { id: 'ent-11', roundId: 'rnd-2569-10-2', serviceId: 'srv-4', count: 0, recordedBy: 'นายสมชาย ใจดี', recordedAt: '2026-10-15T10:00:00' },
-  { id: 'ent-12', roundId: 'rnd-2569-10-2', serviceId: 'srv-5', count: 0, recordedBy: 'นายสมชาย ใจดี', recordedAt: '2026-10-15T10:00:00' },
-  { id: 'ent-13', roundId: 'rnd-2569-10-2', serviceId: 'srv-6', count: 0, recordedBy: 'นายสมชาย ใจดี', recordedAt: '2026-10-15T10:00:00' },
-  { id: 'ent-14', roundId: 'rnd-2569-10-2', serviceId: 'srv-7', count: 0, recordedBy: 'นายสมชาย ใจดี', recordedAt: '2026-10-15T10:00:00' },
+  { id: 'ent-8', roundId: 'rnd-2569-10-2', serviceId: 'srv-1', count: 0, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-10-15T10:00:00' },
+  { id: 'ent-9', roundId: 'rnd-2569-10-2', serviceId: 'srv-2', count: 0, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-10-15T10:00:00' },
+  { id: 'ent-10', roundId: 'rnd-2569-10-2', serviceId: 'srv-3', count: 0, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-10-15T10:00:00' },
+  { id: 'ent-11', roundId: 'rnd-2569-10-2', serviceId: 'srv-4', count: 0, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-10-15T10:00:00' },
+  { id: 'ent-12', roundId: 'rnd-2569-10-2', serviceId: 'srv-5', count: 0, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-10-15T10:00:00' },
+  { id: 'ent-13', roundId: 'rnd-2569-10-2', serviceId: 'srv-6', count: 0, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-10-15T10:00:00' },
+  { id: 'ent-14', roundId: 'rnd-2569-10-2', serviceId: 'srv-7', count: 0, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-10-15T10:00:00' },
 
-  { id: 'ent-15', roundId: 'rnd-2569-10-3', serviceId: 'srv-1', count: 0, recordedBy: 'นายสมชาย ใจดี', recordedAt: '2026-10-21T10:00:00' },
-  { id: 'ent-16', roundId: 'rnd-2569-10-3', serviceId: 'srv-2', count: 0, recordedBy: 'นายสมชาย ใจดี', recordedAt: '2026-10-21T10:00:00' },
-  { id: 'ent-17', roundId: 'rnd-2569-10-3', serviceId: 'srv-3', count: 0, recordedBy: 'นายสมชาย ใจดี', recordedAt: '2026-10-21T10:00:00' },
-  { id: 'ent-18', roundId: 'rnd-2569-10-3', serviceId: 'srv-4', count: 0, recordedBy: 'นายสมชาย ใจดี', recordedAt: '2026-10-21T10:00:00' },
-  { id: 'ent-19', roundId: 'rnd-2569-10-3', serviceId: 'srv-5', count: 0, recordedBy: 'นายสมชาย ใจดี', recordedAt: '2026-10-21T10:00:00' },
-  { id: 'ent-20', roundId: 'rnd-2569-10-3', serviceId: 'srv-6', count: 0, recordedBy: 'นายสมชาย ใจดี', recordedAt: '2026-10-21T10:00:00' },
-  { id: 'ent-21', roundId: 'rnd-2569-10-3', serviceId: 'srv-7', count: 0, recordedBy: 'นายสมชาย ใจดี', recordedAt: '2026-10-21T10:00:00' },
+  { id: 'ent-15', roundId: 'rnd-2569-10-3', serviceId: 'srv-1', count: 0, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-10-21T10:00:00' },
+  { id: 'ent-16', roundId: 'rnd-2569-10-3', serviceId: 'srv-2', count: 0, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-10-21T10:00:00' },
+  { id: 'ent-17', roundId: 'rnd-2569-10-3', serviceId: 'srv-3', count: 0, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-10-21T10:00:00' },
+  { id: 'ent-18', roundId: 'rnd-2569-10-3', serviceId: 'srv-4', count: 0, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-10-21T10:00:00' },
+  { id: 'ent-19', roundId: 'rnd-2569-10-3', serviceId: 'srv-5', count: 0, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-10-21T10:00:00' },
+  { id: 'ent-20', roundId: 'rnd-2569-10-3', serviceId: 'srv-6', count: 0, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-10-21T10:00:00' },
+  { id: 'ent-21', roundId: 'rnd-2569-10-3', serviceId: 'srv-7', count: 0, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-10-21T10:00:00' },
 
   // Round 4 (30/10/69) has 13 for srv-1
-  { id: 'ent-22', roundId: 'rnd-2569-10-4', serviceId: 'srv-1', count: 13, recordedBy: 'นายสมชาย ใจดี', recordedAt: '2026-10-30T16:30:00' },
-  { id: 'ent-23', roundId: 'rnd-2569-10-4', serviceId: 'srv-2', count: 0, recordedBy: 'นายสมชาย ใจดี', recordedAt: '2026-10-30T16:30:00' },
-  { id: 'ent-24', roundId: 'rnd-2569-10-4', serviceId: 'srv-3', count: 0, recordedBy: 'นายสมชาย ใจดี', recordedAt: '2026-10-30T16:30:00' },
-  { id: 'ent-25', roundId: 'rnd-2569-10-4', serviceId: 'srv-4', count: 0, recordedBy: 'นายสมชาย ใจดี', recordedAt: '2026-10-30T16:30:00' },
-  { id: 'ent-26', roundId: 'rnd-2569-10-4', serviceId: 'srv-5', count: 0, recordedBy: 'นายสมชาย ใจดี', recordedAt: '2026-10-30T16:30:00' },
-  { id: 'ent-27', roundId: 'rnd-2569-10-4', serviceId: 'srv-6', count: 0, recordedBy: 'นายสมชาย ใจดี', recordedAt: '2026-10-30T16:30:00' },
-  { id: 'ent-28', roundId: 'rnd-2569-10-4', serviceId: 'srv-7', count: 0, recordedBy: 'นายสมชาย ใจดี', recordedAt: '2026-10-30T16:30:00' },
+  { id: 'ent-22', roundId: 'rnd-2569-10-4', serviceId: 'srv-1', count: 13, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-10-30T16:30:00' },
+  { id: 'ent-23', roundId: 'rnd-2569-10-4', serviceId: 'srv-2', count: 0, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-10-30T16:30:00' },
+  { id: 'ent-24', roundId: 'rnd-2569-10-4', serviceId: 'srv-3', count: 0, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-10-30T16:30:00' },
+  { id: 'ent-25', roundId: 'rnd-2569-10-4', serviceId: 'srv-4', count: 0, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-10-30T16:30:00' },
+  { id: 'ent-26', roundId: 'rnd-2569-10-4', serviceId: 'srv-5', count: 0, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-10-30T16:30:00' },
+  { id: 'ent-27', roundId: 'rnd-2569-10-4', serviceId: 'srv-6', count: 0, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-10-30T16:30:00' },
+  { id: 'ent-28', roundId: 'rnd-2569-10-4', serviceId: 'srv-7', count: 0, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-10-30T16:30:00' },
 
   // Sample data for November 2569
-  { id: 'ent-29', roundId: 'rnd-2569-11-1', serviceId: 'srv-2', count: 25, recordedBy: 'นายสมชาย ใจดี', recordedAt: '2026-11-06T15:00:00' },
-  { id: 'ent-30', roundId: 'rnd-2569-11-1', serviceId: 'srv-3', count: 20, recordedBy: 'นายสมชาย ใจดี', recordedAt: '2026-11-06T15:00:00' },
-  { id: 'ent-31', roundId: 'rnd-2569-11-1', serviceId: 'srv-4', count: 18, recordedBy: 'นายสมชาย ใจดี', recordedAt: '2026-11-06T15:00:00' },
-  { id: 'ent-32', roundId: 'rnd-2569-11-2', serviceId: 'srv-5', count: 32, recordedBy: 'นายสมชาย ใจดี', recordedAt: '2026-11-13T15:00:00' },
-  { id: 'ent-33', roundId: 'rnd-2569-11-2', serviceId: 'srv-6', count: 8, recordedBy: 'นายสมชาย ใจดี', recordedAt: '2026-11-13T15:00:00' },
-  { id: 'ent-34', roundId: 'rnd-2569-11-3', serviceId: 'srv-2', count: 28, recordedBy: 'นายสมชาย ใจดี', recordedAt: '2026-11-20T15:00:00' },
-  { id: 'ent-35', roundId: 'rnd-2569-11-4', serviceId: 'srv-4', count: 22, recordedBy: 'นายสมชาย ใจดี', recordedAt: '2026-11-27T15:00:00' },
+  { id: 'ent-29', roundId: 'rnd-2569-11-1', serviceId: 'srv-2', count: 25, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-11-06T15:00:00' },
+  { id: 'ent-30', roundId: 'rnd-2569-11-1', serviceId: 'srv-3', count: 20, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-11-06T15:00:00' },
+  { id: 'ent-31', roundId: 'rnd-2569-11-1', serviceId: 'srv-4', count: 18, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-11-06T15:00:00' },
+  { id: 'ent-32', roundId: 'rnd-2569-11-2', serviceId: 'srv-5', count: 32, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-11-13T15:00:00' },
+  { id: 'ent-33', roundId: 'rnd-2569-11-2', serviceId: 'srv-6', count: 8, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-11-13T15:00:00' },
+  { id: 'ent-34', roundId: 'rnd-2569-11-3', serviceId: 'srv-2', count: 28, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-11-20T15:00:00' },
+  { id: 'ent-35', roundId: 'rnd-2569-11-4', serviceId: 'srv-4', count: 22, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-11-27T15:00:00' },
 
   // Sample data for December 2569
-  { id: 'ent-36', roundId: 'rnd-2569-12-1', serviceId: 'srv-2', count: 30, recordedBy: 'นายสมชาย ใจดี', recordedAt: '2026-12-08T15:00:00' },
-  { id: 'ent-37', roundId: 'rnd-2569-12-1', serviceId: 'srv-5', count: 40, recordedBy: 'นายสมชาย ใจดี', recordedAt: '2026-12-08T15:00:00' },
-  { id: 'ent-38', roundId: 'rnd-2569-12-2', serviceId: 'srv-6', count: 12, recordedBy: 'นายสมชาย ใจดี', recordedAt: '2026-12-15T15:00:00' },
-  { id: 'ent-39', roundId: 'rnd-2569-12-3', serviceId: 'srv-4', count: 35, recordedBy: 'นายสมชาย ใจดี', recordedAt: '2026-12-22T15:00:00' },
+  { id: 'ent-36', roundId: 'rnd-2569-12-1', serviceId: 'srv-2', count: 30, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-12-08T15:00:00' },
+  { id: 'ent-37', roundId: 'rnd-2569-12-1', serviceId: 'srv-5', count: 40, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-12-08T15:00:00' },
+  { id: 'ent-38', roundId: 'rnd-2569-12-2', serviceId: 'srv-6', count: 12, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-12-15T15:00:00' },
+  { id: 'ent-39', roundId: 'rnd-2569-12-3', serviceId: 'srv-4', count: 35, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-12-22T15:00:00' },
 ];
 
 const SEED_CONDITION_C: ConditionCItem[] = [
@@ -440,8 +440,8 @@ const SEED_AUDIT_LOGS: AuditLog[] = [
   {
     id: 'aud-1',
     timestamp: '2026-10-30T16:32:00',
-    userName: 'นายสมชาย ใจดี',
-    userRole: 'เจ้าหน้าที่บันทึกข้อมูล',
+    userName: 'นางสาวณัฐนันท์ สีตะ',
+    userRole: 'เจ้าหน้าที่บันทึกข้อมูล (สิทธิ์ Admin)',
     action: 'บันทึกจำนวนคนรับบริการ',
     entityType: 'entry',
     entityName: 'บริการฝากครรภ์ (ครั้งที่ 4 วันที่ 30/10/69)',
@@ -519,8 +519,9 @@ export class StorageService {
     if (!localStorage.getItem(STORAGE_KEYS.AUDIT_LOGS)) {
       this.setItem(STORAGE_KEYS.AUDIT_LOGS, SEED_AUDIT_LOGS);
     }
-    if (!localStorage.getItem(STORAGE_KEYS.CURRENT_USER)) {
-      this.setItem(STORAGE_KEYS.CURRENT_USER, MOCK_USERS[0]); // default recorder
+    const storedUser = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
+    if (!storedUser || storedUser.includes('สมชาย') || storedUser.includes('user-rec-1')) {
+      this.setItem(STORAGE_KEYS.CURRENT_USER, MOCK_USERS[0]); // default to นางสาวณัฐนันท์ สีตะ (Admin)
     }
     if (!localStorage.getItem(STORAGE_KEYS.SETTINGS)) {
       this.setItem(STORAGE_KEYS.SETTINGS, DEFAULT_SETTINGS);

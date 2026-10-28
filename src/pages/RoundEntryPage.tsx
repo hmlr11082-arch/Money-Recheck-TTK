@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   AlertTriangle,
   Calendar,
@@ -17,7 +17,7 @@ import {
   Users,
 } from 'lucide-react';
 import { StorageService } from '../services/storage';
-import { ServiceRound, User } from '../types';
+import { ServiceItem, ServiceRound, User } from '../types';
 import {
   FISCAL_YEAR_2570_MONTHS,
   formatCount,
@@ -54,10 +54,17 @@ export const RoundEntryPage: React.FC<RoundEntryPageProps> = ({
     avg: number;
   } | null>(null);
 
+  const [roundsVersion, setRoundsVersion] = useState(0);
   const month = getMonthInfo(currentMonthKey);
-  const services = StorageService.getServices().filter(s => s.isActive);
+  const services = useMemo<ServiceItem[]>(
+    () => StorageService.getServices().filter(s => s.isActive),
+    [roundsVersion]
+  );
   const rates = StorageService.getRates();
-  const rounds = StorageService.getRounds(currentMonthKey);
+  const rounds = useMemo<ServiceRound[]>(
+    () => StorageService.getRounds(currentMonthKey),
+    [currentMonthKey, roundsVersion]
+  );
   const closing = StorageService.getClosing(currentMonthKey);
   const settings = StorageService.getSettings();
 
@@ -67,12 +74,15 @@ export const RoundEntryPage: React.FC<RoundEntryPageProps> = ({
       closing.status === 'paid') &&
     currentUser.role !== 'admin';
 
-  // Set default selected round
+  // Set default selected round when month or rounds change
   useEffect(() => {
     if (rounds.length > 0) {
-      if (!selectedRoundId || !rounds.some(r => r.id === selectedRoundId)) {
-        setSelectedRoundId(rounds[rounds.length - 1].id);
-      }
+      setSelectedRoundId(prev => {
+        if (prev && rounds.some(r => r.id === prev)) {
+          return prev;
+        }
+        return rounds[rounds.length - 1].id;
+      });
     } else {
       setSelectedRoundId('');
     }
@@ -80,18 +90,20 @@ export const RoundEntryPage: React.FC<RoundEntryPageProps> = ({
 
   // Load entries for selected round
   useEffect(() => {
-    if (selectedRoundId) {
-      const allEntries = StorageService.getEntries();
-      const state: Record<string, number> = {};
-      services.forEach(srv => {
-        const ent = allEntries.find(
-          e => e.roundId === selectedRoundId && e.serviceId === srv.id
-        );
-        state[srv.id] = ent ? ent.count : 0;
-      });
-      setEntriesState(state);
+    if (!selectedRoundId) {
+      setEntriesState({});
+      return;
     }
-  }, [selectedRoundId, services]);
+    const allEntries = StorageService.getEntries();
+    const state: Record<string, number> = {};
+    services.forEach(srv => {
+      const ent = allEntries.find(
+        e => e.roundId === selectedRoundId && e.serviceId === srv.id
+      );
+      state[srv.id] = ent ? ent.count : 0;
+    });
+    setEntriesState(state);
+  }, [selectedRoundId]);
 
   const activeRound = rounds.find(r => r.id === selectedRoundId);
 
@@ -161,6 +173,7 @@ export const RoundEntryPage: React.FC<RoundEntryPageProps> = ({
       newRoundName || undefined
     );
     setShowAddRoundModal(false);
+    setRoundsVersion(v => v + 1);
     setSelectedRoundId(newRnd.id);
     setNewRoundDate('');
     setNewRoundName('');

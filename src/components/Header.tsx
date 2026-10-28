@@ -194,8 +194,13 @@ export const Header: React.FC<HeaderProps> = ({
                 className="flex items-center space-x-2 px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 transition-colors focus:outline-none text-left"
               >
                 <div className="hidden sm:block text-right">
-                  <div className="text-xs font-semibold leading-tight text-white flex items-center justify-end gap-1">
-                    {currentUser.name}
+                  <div className="text-xs font-semibold leading-tight text-white flex items-center justify-end gap-1.5">
+                    <span>{currentUser.name}</span>
+                    {currentUser.role === 'admin' && (
+                      <span className="text-[10px] bg-purple-400 text-purple-950 px-1.5 py-0.2 rounded font-bold shadow-xs">
+                        ADMIN
+                      </span>
+                    )}
                   </div>
                   <div className="text-[11px] text-blue-200 leading-tight">
                     {currentUser.roleTitle}
