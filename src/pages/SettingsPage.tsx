@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   AlertTriangle,
   ArrowDown,
@@ -6,9 +6,15 @@ import {
   Building,
   Calendar,
   Check,
+  CheckCircle2,
+  Cloud,
+  CloudDownload,
+  CloudUpload,
   Edit2,
+  HardDrive,
   Lock,
   Plus,
+  RefreshCw,
   Save,
   Settings as SettingsIcon,
   Shield,
@@ -18,6 +24,7 @@ import {
   UserCheck,
   Users,
 } from 'lucide-react';
+import { GoogleDriveService, SyncStatus } from '../services/googleDriveService';
 import { MOCK_USERS, StorageService } from '../services/storage';
 import { ServiceItem, ServiceRate, User } from '../types';
 import {
@@ -38,10 +45,19 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
   onRefreshData,
   onNavigateTab,
 }) => {
-  const [activeSubTab, setActiveSubTab] = useState<'services' | 'rates' | 'system' | 'users'>(
-    'rates'
+  const [activeSubTab, setActiveSubTab] = useState<'drive' | 'rates' | 'services' | 'system' | 'users'>(
+    'drive'
   );
+  const [driveStatus, setDriveStatus] = useState<SyncStatus>(() => GoogleDriveService.getStatus());
+  const [isDriveSyncing, setIsDriveSyncing] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
+
+  useEffect(() => {
+    const unsub = GoogleDriveService.subscribe(status => {
+      setDriveStatus(status);
+    });
+    return () => unsub();
+  }, []);
 
   // Settings State
   const initialSettings = StorageService.getSettings();
@@ -189,6 +205,65 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
     }
   };
 
+  const handleDriveSignIn = async () => {
+    try {
+      setIsDriveSyncing(true);
+      await GoogleDriveService.signInWithGoogle();
+      await GoogleDriveService.syncToDrive();
+      alert('เชื่อมต่อ Google Drive สำเร็จ และบันทึกข้อมูลตั้งต้นขึ้น Cloud เรียบร้อยแล้ว');
+    } catch (err: any) {
+      console.error(err);
+      alert('การเชื่อมต่อ Google Drive ขัดข้อง: ' + (err?.message || 'โปรดตรวจสอบการอนุญาตแล้วลองใหม่อีกครั้ง'));
+    } finally {
+      setIsDriveSyncing(false);
+    }
+  };
+
+  const handleDriveSyncNow = async () => {
+    try {
+      setIsDriveSyncing(true);
+      await GoogleDriveService.syncToDrive();
+      alert('บันทึกข้อมูลทุกตารางขึ้น Google Drive สำเร็จเรียบร้อยแล้ว!');
+    } catch (err: any) {
+      console.error(err);
+      alert('การบันทึกข้อมูลขึ้น Google Drive ล้มเหลว: ' + (err?.message || 'กรุณาลองใหม่อีกครั้ง'));
+    } finally {
+      setIsDriveSyncing(false);
+    }
+  };
+
+  const handleDrivePullNow = async () => {
+    if (
+      !window.confirm(
+        'คุณต้องการดึงข้อมูลล่าสุดจาก Google Drive มาบันทึกทับข้อมูลในเครื่องนี้ใช่หรือไม่?\n\n(แนะนำใช้เมื่อเริ่มใช้งานเครื่องใหม่หรือเปลี่ยนอุปกรณ์ เพื่อให้ได้ข้อมูลที่คีย์ไว้ล่าสุดตรงกัน)'
+      )
+    ) {
+      return;
+    }
+    try {
+      setIsDriveSyncing(true);
+      const success = await GoogleDriveService.pullFromDrive();
+      if (success) {
+        setRefreshKey(prev => prev + 1);
+        if (onRefreshData) onRefreshData();
+        alert('ดึงข้อมูลจาก Google Drive สำเร็จ! ข้อมูลทุกรายการในระบบเป็นปัจจุบันแล้ว');
+      } else {
+        alert('ยังไม่พบไฟล์ฐานข้อมูลใน Google Drive หรือไม่สามารถดาวน์โหลดได้');
+      }
+    } catch (err: any) {
+      console.error(err);
+      alert('เกิดข้อผิดพลาดในการดึงข้อมูล: ' + (err?.message || 'กรุณาลองใหม่อีกครั้ง'));
+    } finally {
+      setIsDriveSyncing(false);
+    }
+  };
+
+  const handleDriveSignOut = async () => {
+    if (window.confirm('คุณต้องการตัดการเชื่อมต่อบัญชี Google Drive จากเครื่องนี้ใช่หรือไม่?')) {
+      await GoogleDriveService.signOut();
+    }
+  };
+
   return (
     <div className="space-y-6 pb-20">
       {/* Header */}
@@ -212,6 +287,16 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
 
         {/* Sub Navigation */}
         <div className="flex space-x-2 mt-5 border-t border-slate-100 pt-3 text-xs font-semibold overflow-x-auto">
+          <button
+            onClick={() => setActiveSubTab('drive')}
+            className={`px-4 py-2 rounded-xl transition-all ${
+              activeSubTab === 'drive'
+                ? 'bg-[#1F4E79] text-white shadow-xs'
+                : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+            }`}
+          >
+            ☁️ ซิงค์ Google Cloud & Drive
+          </button>
           <button
             onClick={() => setActiveSubTab('rates')}
             className={`px-4 py-2 rounded-xl transition-all ${
@@ -254,6 +339,196 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
           </button>
         </div>
       </div>
+
+      {/* SubTab 0: Google Cloud & Drive Sync */}
+      {activeSubTab === 'drive' && (
+        <div className="space-y-6">
+          {/* Main Sync Card */}
+          <div className="bg-white rounded-2xl shadow-xs border border-slate-200 overflow-hidden">
+            <div className="p-6 bg-gradient-to-r from-[#1F4E79] to-[#2E75B6] text-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="flex items-center space-x-3.5">
+                <div className="w-12 h-12 rounded-xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 shrink-0">
+                  <Cloud className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold">บันทึกข้อมูลเข้า Google Cloud / Google Drive</h3>
+                  <p className="text-xs text-blue-100 mt-0.5">
+                    บันทึกข้อมูลของโรงพยาบาลท่าคันโทไว้ที่ Google Drive เพื่อให้สามารถคีย์และเปิดดูได้จากทุกอุปกรณ์
+                  </p>
+                </div>
+              </div>
+
+              {driveStatus.isConnected ? (
+                <div className="flex items-center space-x-2 bg-emerald-500/20 border border-emerald-300/40 text-emerald-100 px-3.5 py-1.5 rounded-full text-xs font-bold">
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                  <span>เชื่อมต่อ Google Drive แล้ว</span>
+                </div>
+              ) : (
+                <div className="flex items-center space-x-2 bg-amber-500/20 border border-amber-300/40 text-amber-100 px-3.5 py-1.5 rounded-full text-xs font-bold">
+                  <span className="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+                  <span>ยังไม่ได้เชื่อมต่อ Google Account</span>
+                </div>
+              )}
+            </div>
+
+            <div className="p-6 space-y-6">
+              {/* Account Connection Status Block */}
+              {driveStatus.isConnected ? (
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-4 rounded-xl border border-emerald-200 bg-emerald-50/40">
+                  <div className="flex items-center space-x-3">
+                    {driveStatus.userPhoto ? (
+                      <img
+                        src={driveStatus.userPhoto}
+                        alt="Profile"
+                        className="w-12 h-12 rounded-full border border-emerald-300"
+                      />
+                    ) : (
+                      <div className="w-12 h-12 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center text-base">
+                        {driveStatus.userName ? driveStatus.userName.charAt(0) : 'G'}
+                      </div>
+                    )}
+                    <div>
+                      <div className="text-sm font-extrabold text-slate-900">
+                        {driveStatus.userName || 'บัญชี Google'}
+                      </div>
+                      <div className="text-xs font-mono text-emerald-800 font-semibold">
+                        {driveStatus.userEmail || 'hmlr11082@gmail.com'}
+                      </div>
+                      <div className="text-[11px] text-slate-500 mt-0.5">
+                        สถานะ: บันทึกข้อมูลแบบเรียลไทม์เข้าบัญชีนี้
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <button
+                      disabled={isDriveSyncing}
+                      onClick={handleDriveSignOut}
+                      className="px-3 py-1.5 text-xs text-rose-600 hover:bg-rose-50 border border-rose-200 rounded-lg font-semibold transition-colors"
+                    >
+                      ตัดการเชื่อมต่อ
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="p-5 rounded-xl border border-blue-200 bg-blue-50/40 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div className="space-y-1">
+                    <h4 className="text-sm font-bold text-slate-900">
+                      เชื่อมต่อบัญชี Google (hmlr11082@gmail.com)
+                    </h4>
+                    <p className="text-xs text-slate-600">
+                      คลิกปุ่มด้านขวาเพื่อเข้าสู่ระบบ Google และอนุญาตสิทธิ์เข้าถึง Google Drive
+                      สำหรับการจัดเก็บฐานข้อมูล สปสช.
+                    </p>
+                  </div>
+                  <button
+                    disabled={isDriveSyncing}
+                    onClick={handleDriveSignIn}
+                    className="px-5 py-2.5 bg-[#1F4E79] hover:bg-blue-900 text-white text-xs font-bold rounded-xl shadow-xs transition-colors flex items-center justify-center gap-2 shrink-0 disabled:opacity-50"
+                  >
+                    {isDriveSyncing ? (
+                      <>
+                        <RefreshCw className="w-4 h-4 animate-spin" /> กำลังเชื่อมต่อ...
+                      </>
+                    ) : (
+                      <>
+                        <Cloud className="w-4 h-4" /> เข้าสู่ระบบ Google เพื่อเชื่อมต่อ Drive
+                      </>
+                    )}
+                  </button>
+                </div>
+              )}
+
+              {/* Drive Details & Controls */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="p-4 rounded-xl border border-slate-200 bg-slate-50 space-y-3">
+                  <div className="flex items-center space-x-2 text-xs font-bold text-slate-700">
+                    <HardDrive className="w-4 h-4 text-blue-600" />
+                    <span>ตำแหน่งจัดเก็บบน Google Drive</span>
+                  </div>
+                  <div className="text-xs space-y-1.5 text-slate-600">
+                    <div className="flex items-center justify-between">
+                      <span className="text-slate-500">โฟลเดอร์ใน Drive:</span>
+                      <span className="font-mono font-bold text-slate-800 bg-white px-2 py-0.5 rounded border border-slate-200">
+                        โรงพยาบาลท่าคันโท_สปสช_2570
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-slate-500">ชื่อไฟล์ฐานข้อมูล:</span>
+                      <span className="font-mono font-bold text-[#1F4E79] bg-white px-2 py-0.5 rounded border border-slate-200">
+                        nhso_cloud_database_2570.json
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-slate-500">ซิงค์ล่าสุดเมื่อ:</span>
+                      <span className="font-semibold text-slate-800">
+                        {driveStatus.lastSyncedAt
+                          ? formatThaiFullDate(driveStatus.lastSyncedAt)
+                          : 'ยังไม่มีประวัติการซิงค์'}
+                      </span>
+                    </div>
+                    {driveStatus.error && (
+                      <div className="text-[11px] text-rose-600 bg-rose-50 p-2 rounded border border-rose-200 mt-2">
+                        ข้อผิดพลาด: {driveStatus.error}
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Action Buttons Panel */}
+                <div className="p-4 rounded-xl border border-slate-200 bg-slate-50 flex flex-col justify-between space-y-3">
+                  <div>
+                    <div className="flex items-center space-x-2 text-xs font-bold text-slate-700 mb-1">
+                      <RefreshCw className="w-4 h-4 text-emerald-600" />
+                      <span>สั่งการซิงค์ข้อมูลด้วยตนเอง (Manual Sync)</span>
+                    </div>
+                    <p className="text-[11px] text-slate-500">
+                      ใช้ปุ่มด้านล่างเพื่อสำรองข้อมูลขึ้น Drive หรือดึงข้อมูลล่าสุดเมื่อใช้งานข้ามเครื่อง
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-2">
+                    <button
+                      disabled={!driveStatus.isConnected || isDriveSyncing}
+                      onClick={handleDriveSyncNow}
+                      className="py-2.5 px-3 bg-[#1F4E79] hover:bg-blue-900 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 shadow-xs transition-colors disabled:opacity-50"
+                    >
+                      <CloudUpload className="w-4 h-4" />
+                      <span>บันทึกขึ้น Drive ทันที</span>
+                    </button>
+                    <button
+                      disabled={!driveStatus.isConnected || isDriveSyncing}
+                      onClick={handleDrivePullNow}
+                      className="py-2.5 px-3 bg-white hover:bg-blue-50 text-blue-900 border border-blue-200 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 shadow-xs transition-colors disabled:opacity-50"
+                    >
+                      <CloudDownload className="w-4 h-4 text-blue-700" />
+                      <span>ดึงข้อมูลล่าสุดจาก Drive</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Multi-Device Instructions */}
+              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs space-y-2 text-slate-700">
+                <h4 className="font-bold text-slate-900 flex items-center gap-1.5">
+                  📱 คำแนะนำการใช้งานได้จากทุกอุปกรณ์ (มือถือ, แท็บเล็ต, PC):
+                </h4>
+                <ul className="space-y-1 list-disc list-inside text-slate-600 pl-1 text-[11px] leading-relaxed">
+                  <li>
+                    <strong>บันทึกจากคอมพิวเตอร์:</strong> เมื่อเจ้าหน้าที่คีย์ข้อมูลรอบบริการหรือบันทึกผล Statement แล้วกด "บันทึก" ข้อมูลจะถูกจัดเก็บเข้า Google Drive ทันที
+                  </li>
+                  <li>
+                    <strong>เปิดดูจากมือถือหรือแท็บเล็ต:</strong> ให้ล็อกอินด้วยบัญชี Google เดียวกัน (<span className="font-mono text-blue-700">hmlr11082@gmail.com</span>) แล้วกด "ดึงข้อมูลล่าสุดจาก Drive" ข้อมูลทั้งหมดจะปรากฏตรงกัน
+                  </li>
+                  <li>
+                    <strong>ความปลอดภัย:</strong> ไฟล์ฐานข้อมูลจัดเก็บอยู่ใน Google Drive ส่วนบุคคลของท่าน ไม่มีการเปิดเผยสู่บุคคลภายนอก
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* SubTab 1: Rates Management */}
       {activeSubTab === 'rates' && (

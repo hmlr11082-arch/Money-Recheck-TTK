@@ -18,6 +18,7 @@ import {
   Sparkles,
   Users,
 } from 'lucide-react';
+import { GoogleDriveService } from '../services/googleDriveService';
 import { StorageService } from '../services/storage';
 import { ConditionCItem, MonthlyClosing, User } from '../types';
 import {
@@ -101,6 +102,9 @@ export const ClaimTrackingPage: React.FC<ClaimTrackingPageProps> = ({
     if (editingDetails) {
       StorageService.updateClaimDetails(selectedMonthKey, editingDetails);
       setShowEditModal(false);
+      if (GoogleDriveService.getStatus().isConnected) {
+        GoogleDriveService.syncToDrive().catch(console.warn);
+      }
     }
   };
 
@@ -119,6 +123,10 @@ export const ClaimTrackingPage: React.FC<ClaimTrackingPageProps> = ({
       conditionCList: updatedList,
       conditionCCount: remainingC,
     });
+
+    if (GoogleDriveService.getStatus().isConnected) {
+      GoogleDriveService.syncToDrive().catch(console.warn);
+    }
   };
 
   return (

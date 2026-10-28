@@ -16,6 +16,7 @@ import {
   Trash2,
   Users,
 } from 'lucide-react';
+import { GoogleDriveService } from '../services/googleDriveService';
 import { StorageService } from '../services/storage';
 import { ServiceItem, ServiceRound, User } from '../types';
 import {
@@ -160,6 +161,13 @@ export const RoundEntryPage: React.FC<RoundEntryPageProps> = ({
     setIsSavedSuccess(true);
     setAnomalyWarning(null);
     setTimeout(() => setIsSavedSuccess(false), 2500);
+
+    // Auto-sync to Google Drive in background if connected
+    if (GoogleDriveService.getStatus().isConnected) {
+      GoogleDriveService.syncToDrive().catch(err => {
+        console.warn('Auto sync to Drive:', err);
+      });
+    }
   };
 
   const handleAddRound = () => {
@@ -177,6 +185,10 @@ export const RoundEntryPage: React.FC<RoundEntryPageProps> = ({
     setSelectedRoundId(newRnd.id);
     setNewRoundDate('');
     setNewRoundName('');
+
+    if (GoogleDriveService.getStatus().isConnected) {
+      GoogleDriveService.syncToDrive().catch(console.warn);
+    }
   };
 
   // Calculate live totals for this round

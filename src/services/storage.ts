@@ -912,6 +912,17 @@ export class StorageService {
     this.setItem(STORAGE_KEYS.AUDIT_LOGS, logs);
   }
 
+  // Restore from Cloud / Google Drive
+  public static restoreFromCloudData(cloudData: any): void {
+    if (cloudData.services) this.setItem(STORAGE_KEYS.SERVICES, cloudData.services);
+    if (cloudData.rates) this.setItem(STORAGE_KEYS.RATES, cloudData.rates);
+    if (cloudData.rounds) this.setItem(STORAGE_KEYS.ROUNDS, cloudData.rounds);
+    if (cloudData.entries) this.setItem(STORAGE_KEYS.ENTRIES, cloudData.entries);
+    if (cloudData.closings) this.setItem(STORAGE_KEYS.CLOSINGS, cloudData.closings);
+    if (cloudData.auditLogs) this.setItem(STORAGE_KEYS.AUDIT_LOGS, cloudData.auditLogs);
+    if (cloudData.settings) this.setItem(STORAGE_KEYS.SETTINGS, cloudData.settings);
+  }
+
   // Reset to initial seed demo
   public static resetToSeed(): void {
     localStorage.removeItem(STORAGE_KEYS.SERVICES);

@@ -19,6 +19,7 @@ import {
   Unlock,
 } from 'lucide-react';
 import { ExcelService } from '../services/excelService';
+import { GoogleDriveService } from '../services/googleDriveService';
 import { StorageService } from '../services/storage';
 import { MonthStatus, ServiceRound, User } from '../types';
 import {
@@ -227,6 +228,9 @@ export const MonthlySummaryPage: React.FC<MonthlySummaryPageProps> = ({
   const handleUpdateStatus = (newStatus: MonthStatus, note?: string) => {
     StorageService.updateClosingStatus(currentMonthKey, newStatus, note);
     setRefreshTrigger(prev => prev + 1);
+    if (GoogleDriveService.getStatus().isConnected) {
+      GoogleDriveService.syncToDrive().catch(console.warn);
+    }
   };
 
   const handleSaveRateQuick = () => {
@@ -240,6 +244,9 @@ export const MonthlySummaryPage: React.FC<MonthlySummaryPageProps> = ({
     setEditingRateService(null);
     setNewRateValue('');
     setRefreshTrigger(prev => prev + 1);
+    if (GoogleDriveService.getStatus().isConnected) {
+      GoogleDriveService.syncToDrive().catch(console.warn);
+    }
   };
 
   const statusConfig = STATUS_CONFIG[closing.status];
