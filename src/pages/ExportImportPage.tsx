@@ -416,7 +416,12 @@ export const ExportImportPage: React.FC<ExportImportPageProps> = ({
             {/* Printable Document Sheet (A4 Landscape Feel) */}
             <div className="p-6 bg-white border border-slate-300 rounded-xl space-y-4 text-xs font-sans text-slate-900">
               {/* Official Header */}
-              <div className="text-center space-y-1 pb-3 border-b-2 border-slate-800">
+              <div className="text-center space-y-1.5 pb-3 border-b-2 border-slate-800 flex flex-col items-center">
+                <img
+                  src="/assets/aistudio/TTK_Logo_3d9ddd8c.png"
+                  alt="ตราสัญลักษณ์โรงพยาบาลท่าคันโท"
+                  className="w-16 h-16 object-contain mb-1"
+                />
                 <h2 className="text-base font-bold uppercase tracking-wide">
                   รายงานสรุปยอดส่งเบิกบริการสร้างเสริมสุขภาพและป้องกันโรค สปสช.
                 </h2>

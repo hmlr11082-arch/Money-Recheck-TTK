@@ -473,7 +473,7 @@ export interface AppSettings {
 
 const DEFAULT_SETTINGS: AppSettings = {
   deadlineDay: 5,
-  hospitalName: 'โรงพยาบาลส่งเสริมสุขภาพประจำตำบล / รพ.ชุมชนโมเดล',
+  hospitalName: 'โรงพยาบาลท่าคันโท',
   hospitalCode: '10742',
   enableAnomalyWarning: true,
   anomalyMultiplier: 3,
@@ -523,7 +523,8 @@ export class StorageService {
     if (!storedUser || storedUser.includes('สมชาย') || storedUser.includes('user-rec-1')) {
       this.setItem(STORAGE_KEYS.CURRENT_USER, MOCK_USERS[0]); // default to นางสาวณัฐนันท์ สีตะ (Admin)
     }
-    if (!localStorage.getItem(STORAGE_KEYS.SETTINGS)) {
+    const storedSettings = localStorage.getItem(STORAGE_KEYS.SETTINGS);
+    if (!storedSettings || storedSettings.includes('ชุมชนโมเดล') || storedSettings.includes('ประจำตำบล')) {
       this.setItem(STORAGE_KEYS.SETTINGS, DEFAULT_SETTINGS);
     }
   }

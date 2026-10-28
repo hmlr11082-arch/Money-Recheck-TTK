@@ -82,8 +82,12 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="flex items-center justify-between h-20">
           {/* Logo & Hospital Title */}
           <div className="flex items-center space-x-3.5">
-            <div className="w-12 h-12 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-inner">
-              <Building2 className="w-7 h-7 text-amber-300" />
+            <div className="w-14 h-14 rounded-2xl bg-white p-1 shadow-md border border-white/40 flex items-center justify-center shrink-0">
+              <img
+                src="/assets/aistudio/TTK_Logo_3d9ddd8c.png"
+                alt="ตราสัญลักษณ์โรงพยาบาลท่าคันโท"
+                className="w-full h-full object-contain drop-shadow-xs"
+              />
             </div>
             <div>
               <div className="flex items-center space-x-2">
