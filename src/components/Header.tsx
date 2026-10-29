@@ -15,7 +15,6 @@ import {
   CloudUpload,
   LogOut,
   RefreshCw,
-  RotateCcw,
   Shield,
   Stethoscope,
   UserCheck,
@@ -124,13 +123,6 @@ export const Header: React.FC<HeaderProps> = ({
     }
   };
 
-  const handleResetData = () => {
-    if (window.confirm('คุณต้องการรีเซ็ตข้อมูลทั้งหมดกลับเป็นค่าเริ่มต้นตาม Seed Data หรือไม่?')) {
-      StorageService.resetToSeed();
-      if (onRefreshData) onRefreshData();
-      alert('รีเซ็ตข้อมูลเป็นค่าเริ่มต้นเรียบร้อยแล้ว');
-    }
-  };
 
   const getRoleBadge = (role: Role) => {
     switch (role) {
@@ -375,16 +367,6 @@ export const Header: React.FC<HeaderProps> = ({
                 </div>
               )}
             </div>
-
-            {/* Reset Demo button */}
-            <button
-              onClick={handleResetData}
-              title="รีเซ็ตข้อมูลกลับเป็นตัวอย่างเดิม"
-              className="p-2 rounded-lg bg-white/10 hover:bg-white/20 transition-colors text-white text-xs hidden lg:flex items-center gap-1"
-            >
-              <RotateCcw className="w-4 h-4" />
-              <span>รีเซ็ต Demo</span>
-            </button>
 
             {/* Role Switcher (Simulate Role) */}
             <div className="relative">

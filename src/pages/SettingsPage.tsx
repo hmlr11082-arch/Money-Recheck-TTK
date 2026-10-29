@@ -205,6 +205,23 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
     }
   };
 
+  const handleClearAllNumbers = () => {
+    if (currentUser.role !== 'admin') {
+      alert('เฉพาะผู้ดูแลระบบ (Admin) เท่านั้นที่สามารถล้างข้อมูลตัวเลขทั้งหมดได้');
+      return;
+    }
+    if (
+      window.confirm(
+        '⚠️ คุณแน่ใจหรือไม่ที่จะล้างตัวเลขผู้รับบริการ รอบการบริการ และยอดเงินทั้งหมดในระบบให้เป็น 0?\n\nข้อมูลรอบบริการทั้งหมดจะถูกลบ และยอดปิดเดือนจะถูกรีเซ็ตเป็น 0 ทุกเดือน เพื่อให้คุณเริ่มบันทึกข้อมูลใหม่ด้วยตนเอง (รายการบริการและอัตราเบิกจะคงเดิม)'
+      )
+    ) {
+      StorageService.clearAllNumbers();
+      setRefreshKey(prev => prev + 1);
+      alert('ล้างข้อมูลตัวเลขทั้งหมดเรียบร้อยแล้ว ทุกเดือนเริ่มต้นเป็น 0 พร้อมสำหรับการบันทึกข้อมูลใหม่ของคุณ');
+      if (onRefreshData) onRefreshData();
+    }
+  };
+
   const handleDriveSignIn = async () => {
     try {
       setIsDriveSyncing(true);
@@ -896,6 +913,28 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
                   </div>
                 );
               })}
+            </div>
+          </div>
+
+          {/* Data Reset (Clear All Numbers to Zero) */}
+          <div className="lg:col-span-2 bg-rose-50/70 border border-rose-200 rounded-2xl p-6 shadow-xs">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="space-y-1">
+                <div className="flex items-center gap-2 text-rose-700 font-bold text-base">
+                  <Trash2 className="w-5 h-5 text-rose-600" />
+                  <h3>ล้างข้อมูลตัวเลขทั้งหมด เพื่อเริ่มบันทึกข้อมูลจริงด้วยตนเอง</h3>
+                </div>
+                <p className="text-xs text-rose-600/90 leading-relaxed max-w-2xl">
+                  คำสั่งนี้จะรีเซ็ตยอดจำนวนคนและยอดเงินทั้งหมดในทุกเดือนให้เป็น 0 และลบประวัติรอบบริการเดิมออกทั้งหมด โดยยังคงรายการบริการสุขภาพ (7 รายการ) และอัตราเบิกไว้ เพื่อให้คุณเริ่มต้นบันทึกข้อมูลจริงของโรงพยาบาลท่าคันโทด้วยตนเอง
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={handleClearAllNumbers}
+                className="px-5 py-2.5 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold shadow-xs flex items-center gap-2 shrink-0 transition-colors"
+              >
+                <Trash2 className="w-4 h-4" /> ล้างตัวเลขทั้งหมด (เริ่มบันทึกใหม่)
+              </button>
             </div>
           </div>
         </div>

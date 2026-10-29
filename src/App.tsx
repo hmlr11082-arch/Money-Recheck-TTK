@@ -10,7 +10,6 @@ import { AnnualSummaryPage } from './pages/AnnualSummaryPage';
 import { AuditLogPage } from './pages/AuditLogPage';
 import { ClaimTrackingPage } from './pages/ClaimTrackingPage';
 import { DashboardPage } from './pages/DashboardPage';
-import { ExportImportPage } from './pages/ExportImportPage';
 import { MonthlySummaryPage } from './pages/MonthlySummaryPage';
 import { RoundEntryPage } from './pages/RoundEntryPage';
 import { SettingsPage } from './pages/SettingsPage';
@@ -104,16 +103,6 @@ export default function App() {
             key={refreshKey}
             currentUser={currentUser}
             onSelectMonth={setCurrentMonthKey}
-            onNavigateTab={setActiveTab}
-          />
-        )}
-
-        {activeTab === 'export' && (
-          <ExportImportPage
-            key={refreshKey}
-            currentMonthKey={currentMonthKey}
-            onSelectMonth={setCurrentMonthKey}
-            currentUser={currentUser}
             onNavigateTab={setActiveTab}
           />
         )}

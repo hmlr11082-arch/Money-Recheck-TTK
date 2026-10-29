@@ -1,0 +1,435 @@
+{
+  "version": 2,
+  "exportDate": "2026-10-29T02:00:00.000Z",
+  "hospitalName": "โรงพยาบาลท่าคันโท",
+  "fiscalYear": 2570,
+  "services": [
+    {
+      "id": "srv-1",
+      "code": "ANC-01",
+      "name": "บริการฝากครรภ์",
+      "unit": "คน",
+      "order": 1,
+      "isActive": true,
+      "category": "ส่งเสริมสุขภาพสตรีและเด็ก",
+      "description": "การดูแลครรภ์ตามเกณฑ์มาตรฐาน สปสช."
+    },
+    {
+      "id": "srv-2",
+      "code": "LAB-CBC",
+      "name": "คัดกรองโลหิตจางจากการขาดธาตุเหล็ก (CBC)",
+      "unit": "คน",
+      "order": 2,
+      "isActive": true,
+      "category": "บริการตรวจทางห้องปฏิบัติการ",
+      "description": "ตรวจความสมบูรณ์ของเม็ดเลือด CBC"
+    },
+    {
+      "id": "srv-3",
+      "code": "MED-FE",
+      "name": "ยาน้ำเสริมธาตุเหล็กและกรดโฟลิค",
+      "unit": "คน",
+      "order": 3,
+      "isActive": true,
+      "category": "เวชภัณฑ์และยา",
+      "description": "จ่ายยาน้ำเสริมธาตุเหล็กและโฟลิคตามสิทธิประโยชน์"
+    },
+    {
+      "id": "srv-4",
+      "code": "DEN-FL",
+      "name": "บริการเคลือบฟลูออไรด์",
+      "unit": "คน",
+      "order": 4,
+      "isActive": true,
+      "category": "ทันตกรรมป้องกัน",
+      "description": "เคลือบฟลูออไรด์วานิชหรือเจลในกลุ่มเป้าหมาย"
+    },
+    {
+      "id": "srv-5",
+      "code": "FIT-01",
+      "name": "คัดกรองมะเร็งลำไส้ใหญ่และลำไส้ตรง (FIT Test)",
+      "unit": "คน",
+      "order": 5,
+      "isActive": true,
+      "category": "คัดกรองมะเร็ง",
+      "description": "ตรวจคัดกรองเลือดแฝงในอุจจาระอายุ 50-70 ปี"
+    },
+    {
+      "id": "srv-6",
+      "code": "PNC-01",
+      "name": "บริการตรวจหลังคลอด",
+      "unit": "คน",
+      "order": 6,
+      "isActive": true,
+      "category": "ส่งเสริมสุขภาพสตรีและเด็ก",
+      "description": "ตรวจสุขภาพมารดาและทารกหลังคลอดตามเกณฑ์"
+    },
+    {
+      "id": "srv-7",
+      "code": "THAI-HERB",
+      "name": "ยาสมุนไพร 32 รายการ",
+      "unit": "คน",
+      "order": 7,
+      "isActive": true,
+      "category": "การแพทย์แผนไทยและแพทย์ทางเลือก",
+      "description": "การจ่ายยาสมุนไพรในบัญชียาหลักแห่งชาติ 32 รายการ"
+    }
+  ],
+  "rates": [
+    {
+      "serviceId": "srv-1",
+      "rate": null,
+      "effectiveDate": "2026-10-01",
+      "note": "รอประกาศอัตราจ่ายปี 2570 จาก สปสช."
+    },
+    {
+      "serviceId": "srv-2",
+      "rate": 65,
+      "effectiveDate": "2026-10-01",
+      "note": "อัตราเบิก 65 บาท/คน"
+    },
+    {
+      "serviceId": "srv-3",
+      "rate": 35,
+      "effectiveDate": "2026-10-01",
+      "note": "อัตราเบิก 35 บาท/คน"
+    },
+    {
+      "serviceId": "srv-4",
+      "rate": 100,
+      "effectiveDate": "2026-10-01",
+      "note": "อัตราเบิก 100 บาท/คน"
+    },
+    {
+      "serviceId": "srv-5",
+      "rate": 60,
+      "effectiveDate": "2026-10-01",
+      "note": "อัตราเบิก 60 บาท/คน"
+    },
+    {
+      "serviceId": "srv-6",
+      "rate": 285,
+      "effectiveDate": "2026-10-01",
+      "note": "อัตราเบิก 285 บาท/คน"
+    },
+    {
+      "serviceId": "srv-7",
+      "rate": null,
+      "effectiveDate": "2026-10-01",
+      "note": "รอกำหนดราคาตามรายการสมุนไพร"
+    }
+  ],
+  "rounds": [],
+  "entries": [],
+  "closings": [
+    {
+      "id": "cls-2569-10",
+      "monthKey": "2569-10",
+      "fiscalYear": 2570,
+      "status": "draft",
+      "totalCount": 0,
+      "totalAmount": 0,
+      "statusUpdatedAt": "2026-10-29T02:00:00.000Z",
+      "notes": "",
+      "claimDetails": {
+        "claimedCount": 0,
+        "claimedAmount": 0,
+        "paidCount": 0,
+        "paidAmount": 0,
+        "conditionCCount": 0,
+        "conditionCAmount": 0,
+        "pendingCount": 0,
+        "pendingAmount": 0,
+        "batchNumber": "",
+        "claimDate": "",
+        "paidDate": "",
+        "conditionCList": []
+      }
+    },
+    {
+      "id": "cls-2569-11",
+      "monthKey": "2569-11",
+      "fiscalYear": 2570,
+      "status": "draft",
+      "totalCount": 0,
+      "totalAmount": 0,
+      "statusUpdatedAt": "2026-10-29T02:00:00.000Z",
+      "notes": "",
+      "claimDetails": {
+        "claimedCount": 0,
+        "claimedAmount": 0,
+        "paidCount": 0,
+        "paidAmount": 0,
+        "conditionCCount": 0,
+        "conditionCAmount": 0,
+        "pendingCount": 0,
+        "pendingAmount": 0,
+        "batchNumber": "",
+        "claimDate": "",
+        "paidDate": "",
+        "conditionCList": []
+      }
+    },
+    {
+      "id": "cls-2569-12",
+      "monthKey": "2569-12",
+      "fiscalYear": 2570,
+      "status": "draft",
+      "totalCount": 0,
+      "totalAmount": 0,
+      "statusUpdatedAt": "2026-10-29T02:00:00.000Z",
+      "notes": "",
+      "claimDetails": {
+        "claimedCount": 0,
+        "claimedAmount": 0,
+        "paidCount": 0,
+        "paidAmount": 0,
+        "conditionCCount": 0,
+        "conditionCAmount": 0,
+        "pendingCount": 0,
+        "pendingAmount": 0,
+        "batchNumber": "",
+        "claimDate": "",
+        "paidDate": "",
+        "conditionCList": []
+      }
+    },
+    {
+      "id": "cls-2570-01",
+      "monthKey": "2570-01",
+      "fiscalYear": 2570,
+      "status": "draft",
+      "totalCount": 0,
+      "totalAmount": 0,
+      "statusUpdatedAt": "2026-10-29T02:00:00.000Z",
+      "notes": "",
+      "claimDetails": {
+        "claimedCount": 0,
+        "claimedAmount": 0,
+        "paidCount": 0,
+        "paidAmount": 0,
+        "conditionCCount": 0,
+        "conditionCAmount": 0,
+        "pendingCount": 0,
+        "pendingAmount": 0,
+        "batchNumber": "",
+        "claimDate": "",
+        "paidDate": "",
+        "conditionCList": []
+      }
+    },
+    {
+      "id": "cls-2570-02",
+      "monthKey": "2570-02",
+      "fiscalYear": 2570,
+      "status": "draft",
+      "totalCount": 0,
+      "totalAmount": 0,
+      "statusUpdatedAt": "2026-10-29T02:00:00.000Z",
+      "notes": "",
+      "claimDetails": {
+        "claimedCount": 0,
+        "claimedAmount": 0,
+        "paidCount": 0,
+        "paidAmount": 0,
+        "conditionCCount": 0,
+        "conditionCAmount": 0,
+        "pendingCount": 0,
+        "pendingAmount": 0,
+        "batchNumber": "",
+        "claimDate": "",
+        "paidDate": "",
+        "conditionCList": []
+      }
+    },
+    {
+      "id": "cls-2570-03",
+      "monthKey": "2570-03",
+      "fiscalYear": 2570,
+      "status": "draft",
+      "totalCount": 0,
+      "totalAmount": 0,
+      "statusUpdatedAt": "2026-10-29T02:00:00.000Z",
+      "notes": "",
+      "claimDetails": {
+        "claimedCount": 0,
+        "claimedAmount": 0,
+        "paidCount": 0,
+        "paidAmount": 0,
+        "conditionCCount": 0,
+        "conditionCAmount": 0,
+        "pendingCount": 0,
+        "pendingAmount": 0,
+        "batchNumber": "",
+        "claimDate": "",
+        "paidDate": "",
+        "conditionCList": []
+      }
+    },
+    {
+      "id": "cls-2570-04",
+      "monthKey": "2570-04",
+      "fiscalYear": 2570,
+      "status": "draft",
+      "totalCount": 0,
+      "totalAmount": 0,
+      "statusUpdatedAt": "2026-10-29T02:00:00.000Z",
+      "notes": "",
+      "claimDetails": {
+        "claimedCount": 0,
+        "claimedAmount": 0,
+        "paidCount": 0,
+        "paidAmount": 0,
+        "conditionCCount": 0,
+        "conditionCAmount": 0,
+        "pendingCount": 0,
+        "pendingAmount": 0,
+        "batchNumber": "",
+        "claimDate": "",
+        "paidDate": "",
+        "conditionCList": []
+      }
+    },
+    {
+      "id": "cls-2570-05",
+      "monthKey": "2570-05",
+      "fiscalYear": 2570,
+      "status": "draft",
+      "totalCount": 0,
+      "totalAmount": 0,
+      "statusUpdatedAt": "2026-10-29T02:00:00.000Z",
+      "notes": "",
+      "claimDetails": {
+        "claimedCount": 0,
+        "claimedAmount": 0,
+        "paidCount": 0,
+        "paidAmount": 0,
+        "conditionCCount": 0,
+        "conditionCAmount": 0,
+        "pendingCount": 0,
+        "pendingAmount": 0,
+        "batchNumber": "",
+        "claimDate": "",
+        "paidDate": "",
+        "conditionCList": []
+      }
+    },
+    {
+      "id": "cls-2570-06",
+      "monthKey": "2570-06",
+      "fiscalYear": 2570,
+      "status": "draft",
+      "totalCount": 0,
+      "totalAmount": 0,
+      "statusUpdatedAt": "2026-10-29T02:00:00.000Z",
+      "notes": "",
+      "claimDetails": {
+        "claimedCount": 0,
+        "claimedAmount": 0,
+        "paidCount": 0,
+        "paidAmount": 0,
+        "conditionCCount": 0,
+        "conditionCAmount": 0,
+        "pendingCount": 0,
+        "pendingAmount": 0,
+        "batchNumber": "",
+        "claimDate": "",
+        "paidDate": "",
+        "conditionCList": []
+      }
+    },
+    {
+      "id": "cls-2570-07",
+      "monthKey": "2570-07",
+      "fiscalYear": 2570,
+      "status": "draft",
+      "totalCount": 0,
+      "totalAmount": 0,
+      "statusUpdatedAt": "2026-10-29T02:00:00.000Z",
+      "notes": "",
+      "claimDetails": {
+        "claimedCount": 0,
+        "claimedAmount": 0,
+        "paidCount": 0,
+        "paidAmount": 0,
+        "conditionCCount": 0,
+        "conditionCAmount": 0,
+        "pendingCount": 0,
+        "pendingAmount": 0,
+        "batchNumber": "",
+        "claimDate": "",
+        "paidDate": "",
+        "conditionCList": []
+      }
+    },
+    {
+      "id": "cls-2570-08",
+      "monthKey": "2570-08",
+      "fiscalYear": 2570,
+      "status": "draft",
+      "totalCount": 0,
+      "totalAmount": 0,
+      "statusUpdatedAt": "2026-10-29T02:00:00.000Z",
+      "notes": "",
+      "claimDetails": {
+        "claimedCount": 0,
+        "claimedAmount": 0,
+        "paidCount": 0,
+        "paidAmount": 0,
+        "conditionCCount": 0,
+        "conditionCAmount": 0,
+        "pendingCount": 0,
+        "pendingAmount": 0,
+        "batchNumber": "",
+        "claimDate": "",
+        "paidDate": "",
+        "conditionCList": []
+      }
+    },
+    {
+      "id": "cls-2570-09",
+      "monthKey": "2570-09",
+      "fiscalYear": 2570,
+      "status": "draft",
+      "totalCount": 0,
+      "totalAmount": 0,
+      "statusUpdatedAt": "2026-10-29T02:00:00.000Z",
+      "notes": "",
+      "claimDetails": {
+        "claimedCount": 0,
+        "claimedAmount": 0,
+        "paidCount": 0,
+        "paidAmount": 0,
+        "conditionCCount": 0,
+        "conditionCAmount": 0,
+        "pendingCount": 0,
+        "pendingAmount": 0,
+        "batchNumber": "",
+        "claimDate": "",
+        "paidDate": "",
+        "conditionCList": []
+      }
+    }
+  ],
+  "auditLogs": [
+    {
+      "id": "aud-init-0",
+      "timestamp": "2026-10-29T02:00:00.000Z",
+      "userName": "นางสาวณัฐนันท์ สีตะ",
+      "userRole": "เจ้าหน้าที่บันทึกข้อมูล (สิทธิ์ Admin)",
+      "action": "ล้างข้อมูลตัวเลขทั้งหมดเพื่อเริ่มต้นคีย์ข้อมูลจริง",
+      "entityType": "status",
+      "entityName": "ระบบส่งเบิก สปสช. ปี 2570",
+      "oldValue": "ข้อมูลตัวอย่าง",
+      "newValue": "0 คน 0 บาท (พร้อมเริ่มบันทึกข้อมูลจริง)",
+      "details": "ล้างยอดผู้รับบริการและรายการติด C ทั้งหมดเพื่อเริ่มบันทึกข้อมูลจริง"
+    }
+  ],
+  "settings": {
+    "deadlineDay": 5,
+    "hospitalName": "โรงพยาบาลท่าคันโท",
+    "hospitalCode": "10742",
+    "enableAnomalyWarning": true,
+    "anomalyMultiplier": 3
+  }
+}

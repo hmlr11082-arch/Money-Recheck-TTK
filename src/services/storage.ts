@@ -174,267 +174,39 @@ const SEED_RATES: ServiceRate[] = [
   },
 ];
 
-// Initial seed rounds for October 2569 (matching screenshot)
-const SEED_ROUNDS: ServiceRound[] = [
-  {
-    id: 'rnd-2569-10-1',
-    fiscalYear: 2570,
-    monthKey: '2569-10',
-    roundNumber: 1,
-    roundName: 'ครั้งที่ 1',
-    date: '2026-10-08', // 8/10/69
-  },
-  {
-    id: 'rnd-2569-10-2',
-    fiscalYear: 2570,
-    monthKey: '2569-10',
-    roundNumber: 2,
-    roundName: 'ครั้งที่ 2',
-    date: '2026-10-15', // 15/10/69
-  },
-  {
-    id: 'rnd-2569-10-3',
-    fiscalYear: 2570,
-    monthKey: '2569-10',
-    roundNumber: 3,
-    roundName: 'ครั้งที่ 3',
-    date: '2026-10-21', // 21/10/69
-  },
-  {
-    id: 'rnd-2569-10-4',
-    fiscalYear: 2570,
-    monthKey: '2569-10',
-    roundNumber: 4,
-    roundName: 'ครั้งที่ 4',
-    date: '2026-10-30', // 30/10/69
-  },
-  // Sample rounds for November 2569
-  {
-    id: 'rnd-2569-11-1',
-    fiscalYear: 2570,
-    monthKey: '2569-11',
-    roundNumber: 1,
-    roundName: 'ครั้งที่ 1',
-    date: '2026-11-06',
-  },
-  {
-    id: 'rnd-2569-11-2',
-    fiscalYear: 2570,
-    monthKey: '2569-11',
-    roundNumber: 2,
-    roundName: 'ครั้งที่ 2',
-    date: '2026-11-13',
-  },
-  {
-    id: 'rnd-2569-11-3',
-    fiscalYear: 2570,
-    monthKey: '2569-11',
-    roundNumber: 3,
-    roundName: 'ครั้งที่ 3',
-    date: '2026-11-20',
-  },
-  {
-    id: 'rnd-2569-11-4',
-    fiscalYear: 2570,
-    monthKey: '2569-11',
-    roundNumber: 4,
-    roundName: 'ครั้งที่ 4',
-    date: '2026-11-27',
-  },
-  // Sample rounds for December 2569
-  {
-    id: 'rnd-2569-12-1',
-    fiscalYear: 2570,
-    monthKey: '2569-12',
-    roundNumber: 1,
-    roundName: 'ครั้งที่ 1',
-    date: '2026-12-08',
-  },
-  {
-    id: 'rnd-2569-12-2',
-    fiscalYear: 2570,
-    monthKey: '2569-12',
-    roundNumber: 2,
-    roundName: 'ครั้งที่ 2',
-    date: '2026-12-15',
-  },
-  {
-    id: 'rnd-2569-12-3',
-    fiscalYear: 2570,
-    monthKey: '2569-12',
-    roundNumber: 3,
-    roundName: 'ครั้งที่ 3',
-    date: '2026-12-22',
-  },
-];
+// Clean initial rounds: 0 rounds (user will record data fresh)
+const SEED_ROUNDS: ServiceRound[] = [];
 
-// Seed entries: exactly matches the screenshot for Oct 2569!
-// In Oct 2569:
-// Service 1 (ฝากครรภ์) in round 4 has 13 people, all other services 0
-const SEED_ENTRIES: ServiceEntry[] = [
-  // October 2569
-  { id: 'ent-1', roundId: 'rnd-2569-10-1', serviceId: 'srv-1', count: 0, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-10-08T10:00:00' },
-  { id: 'ent-2', roundId: 'rnd-2569-10-1', serviceId: 'srv-2', count: 0, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-10-08T10:00:00' },
-  { id: 'ent-3', roundId: 'rnd-2569-10-1', serviceId: 'srv-3', count: 0, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-10-08T10:00:00' },
-  { id: 'ent-4', roundId: 'rnd-2569-10-1', serviceId: 'srv-4', count: 0, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-10-08T10:00:00' },
-  { id: 'ent-5', roundId: 'rnd-2569-10-1', serviceId: 'srv-5', count: 0, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-10-08T10:00:00' },
-  { id: 'ent-6', roundId: 'rnd-2569-10-1', serviceId: 'srv-6', count: 0, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-10-08T10:00:00' },
-  { id: 'ent-7', roundId: 'rnd-2569-10-1', serviceId: 'srv-7', count: 0, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-10-08T10:00:00' },
+// Clean initial entries: 0 entries
+const SEED_ENTRIES: ServiceEntry[] = [];
 
-  { id: 'ent-8', roundId: 'rnd-2569-10-2', serviceId: 'srv-1', count: 0, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-10-15T10:00:00' },
-  { id: 'ent-9', roundId: 'rnd-2569-10-2', serviceId: 'srv-2', count: 0, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-10-15T10:00:00' },
-  { id: 'ent-10', roundId: 'rnd-2569-10-2', serviceId: 'srv-3', count: 0, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-10-15T10:00:00' },
-  { id: 'ent-11', roundId: 'rnd-2569-10-2', serviceId: 'srv-4', count: 0, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-10-15T10:00:00' },
-  { id: 'ent-12', roundId: 'rnd-2569-10-2', serviceId: 'srv-5', count: 0, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-10-15T10:00:00' },
-  { id: 'ent-13', roundId: 'rnd-2569-10-2', serviceId: 'srv-6', count: 0, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-10-15T10:00:00' },
-  { id: 'ent-14', roundId: 'rnd-2569-10-2', serviceId: 'srv-7', count: 0, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-10-15T10:00:00' },
+const SEED_CONDITION_C: ConditionCItem[] = [];
 
-  { id: 'ent-15', roundId: 'rnd-2569-10-3', serviceId: 'srv-1', count: 0, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-10-21T10:00:00' },
-  { id: 'ent-16', roundId: 'rnd-2569-10-3', serviceId: 'srv-2', count: 0, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-10-21T10:00:00' },
-  { id: 'ent-17', roundId: 'rnd-2569-10-3', serviceId: 'srv-3', count: 0, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-10-21T10:00:00' },
-  { id: 'ent-18', roundId: 'rnd-2569-10-3', serviceId: 'srv-4', count: 0, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-10-21T10:00:00' },
-  { id: 'ent-19', roundId: 'rnd-2569-10-3', serviceId: 'srv-5', count: 0, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-10-21T10:00:00' },
-  { id: 'ent-20', roundId: 'rnd-2569-10-3', serviceId: 'srv-6', count: 0, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-10-21T10:00:00' },
-  { id: 'ent-21', roundId: 'rnd-2569-10-3', serviceId: 'srv-7', count: 0, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-10-21T10:00:00' },
-
-  // Round 4 (30/10/69) has 13 for srv-1
-  { id: 'ent-22', roundId: 'rnd-2569-10-4', serviceId: 'srv-1', count: 13, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-10-30T16:30:00' },
-  { id: 'ent-23', roundId: 'rnd-2569-10-4', serviceId: 'srv-2', count: 0, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-10-30T16:30:00' },
-  { id: 'ent-24', roundId: 'rnd-2569-10-4', serviceId: 'srv-3', count: 0, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-10-30T16:30:00' },
-  { id: 'ent-25', roundId: 'rnd-2569-10-4', serviceId: 'srv-4', count: 0, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-10-30T16:30:00' },
-  { id: 'ent-26', roundId: 'rnd-2569-10-4', serviceId: 'srv-5', count: 0, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-10-30T16:30:00' },
-  { id: 'ent-27', roundId: 'rnd-2569-10-4', serviceId: 'srv-6', count: 0, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-10-30T16:30:00' },
-  { id: 'ent-28', roundId: 'rnd-2569-10-4', serviceId: 'srv-7', count: 0, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-10-30T16:30:00' },
-
-  // Sample data for November 2569
-  { id: 'ent-29', roundId: 'rnd-2569-11-1', serviceId: 'srv-2', count: 25, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-11-06T15:00:00' },
-  { id: 'ent-30', roundId: 'rnd-2569-11-1', serviceId: 'srv-3', count: 20, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-11-06T15:00:00' },
-  { id: 'ent-31', roundId: 'rnd-2569-11-1', serviceId: 'srv-4', count: 18, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-11-06T15:00:00' },
-  { id: 'ent-32', roundId: 'rnd-2569-11-2', serviceId: 'srv-5', count: 32, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-11-13T15:00:00' },
-  { id: 'ent-33', roundId: 'rnd-2569-11-2', serviceId: 'srv-6', count: 8, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-11-13T15:00:00' },
-  { id: 'ent-34', roundId: 'rnd-2569-11-3', serviceId: 'srv-2', count: 28, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-11-20T15:00:00' },
-  { id: 'ent-35', roundId: 'rnd-2569-11-4', serviceId: 'srv-4', count: 22, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-11-27T15:00:00' },
-
-  // Sample data for December 2569
-  { id: 'ent-36', roundId: 'rnd-2569-12-1', serviceId: 'srv-2', count: 30, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-12-08T15:00:00' },
-  { id: 'ent-37', roundId: 'rnd-2569-12-1', serviceId: 'srv-5', count: 40, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-12-08T15:00:00' },
-  { id: 'ent-38', roundId: 'rnd-2569-12-2', serviceId: 'srv-6', count: 12, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-12-15T15:00:00' },
-  { id: 'ent-39', roundId: 'rnd-2569-12-3', serviceId: 'srv-4', count: 35, recordedBy: 'นางสาวณัฐนันท์ สีตะ', recordedAt: '2026-12-22T15:00:00' },
-];
-
-const SEED_CONDITION_C: ConditionCItem[] = [
-  {
-    id: 'c-1',
-    patientCode: 'HN-6900241',
-    serviceName: 'คัดกรองมะเร็งลำไส้ใหญ่และลำไส้ตรง (FIT Test)',
-    errorCode: 'C01',
-    errorDetail: 'เลขประจำตัวประชาชนไม่ตรงกับฐานข้อมูลทะเบียนราษฎร์ (DOPA)',
-    amount: 60,
-    status: 'pending',
+// Clean initial monthly closings: All 12 months in FY 2570 set to 0 and draft
+const SEED_CLOSINGS: MonthlyClosing[] = FISCAL_YEAR_2570_MONTHS.map(m => ({
+  id: `cls-${m.key}`,
+  monthKey: m.key,
+  fiscalYear: 2570,
+  status: 'draft',
+  totalCount: 0,
+  totalAmount: 0,
+  statusUpdatedAt: new Date().toISOString(),
+  notes: '',
+  claimDetails: {
+    claimedCount: 0,
+    claimedAmount: 0,
+    paidCount: 0,
+    paidAmount: 0,
+    conditionCCount: 0,
+    conditionCAmount: 0,
+    pendingCount: 0,
+    pendingAmount: 0,
+    batchNumber: '',
+    claimDate: '',
+    paidDate: '',
+    conditionCList: [],
   },
-  {
-    id: 'c-2',
-    patientCode: 'HN-6900389',
-    serviceName: 'บริการเคลือบฟลูออไรด์',
-    errorCode: 'C05',
-    errorDetail: 'เกินเกณฑ์ความถี่ที่กำหนด (เคยรับบริการแล้วในปีงบประมาณเดียวกัน)',
-    amount: 100,
-    status: 'pending',
-  },
-  {
-    id: 'c-3',
-    patientCode: 'HN-6900512',
-    serviceName: 'บริการตรวจหลังคลอด',
-    errorCode: 'C12',
-    errorDetail: 'ไม่มีเอกสารแนบยืนยันวันคลอดของทารกในเวชระเบียน',
-    amount: 285,
-    status: 'pending',
-  },
-  {
-    id: 'c-4',
-    patientCode: 'HN-6900673',
-    serviceName: 'คัดกรองโลหิตจาง (CBC)',
-    errorCode: 'C23',
-    errorDetail: 'รหัสการวินิจฉัยโรคเบิกจ่ายไม่สอดคล้องกับระเบียบ สปสช.',
-    amount: 65,
-    status: 'resolved',
-  },
-];
-
-// Seed monthly closings
-const SEED_CLOSINGS: MonthlyClosing[] = [
-  {
-    id: 'cls-2569-10',
-    monthKey: '2569-10',
-    fiscalYear: 2570,
-    status: 'draft', // October is draft as user is editing
-    totalCount: 13,
-    totalAmount: 0, // rate not set for pregnancy service
-    statusUpdatedAt: '2026-10-30T17:00:00',
-    notes: 'รอผู้ดูแลระบบกำหนดอัตราเบิกบริการฝากครรภ์',
-    claimDetails: {
-      claimedCount: 13,
-      claimedAmount: 0,
-      paidCount: 0,
-      paidAmount: 0,
-      conditionCCount: 0,
-      conditionCAmount: 0,
-      pendingCount: 13,
-      pendingAmount: 0,
-      batchNumber: 'STM-2570-10-001',
-      claimDate: '2026-11-02',
-    },
-  },
-  {
-    id: 'cls-2569-11',
-    monthKey: '2569-11',
-    fiscalYear: 2570,
-    status: 'paid', // November is paid
-    totalCount: 153,
-    totalAmount: 11525,
-    approvedBy: 'พว. นฤมล เก่งงาน',
-    statusUpdatedAt: '2026-12-15T14:30:00',
-    notes: 'สปสช. โอนชดเชยแล้ว หักยอดติด C รอแก้ไข',
-    claimDetails: {
-      claimedCount: 153,
-      claimedAmount: 11525,
-      paidCount: 145,
-      paidAmount: 10980,
-      conditionCCount: 5,
-      conditionCAmount: 345,
-      pendingCount: 3,
-      pendingAmount: 200,
-      batchNumber: 'STM-2570-11-042',
-      claimDate: '2026-12-05',
-      paidDate: '2026-12-28',
-      conditionCList: SEED_CONDITION_C.slice(0, 2),
-    },
-  },
-  {
-    id: 'cls-2569-12',
-    monthKey: '2569-12',
-    fiscalYear: 2570,
-    status: 'claimed', // December is claimed, waiting for NHSO payment
-    totalCount: 117,
-    totalAmount: 11270,
-    approvedBy: 'พว. นฤมล เก่งงาน',
-    statusUpdatedAt: '2027-01-08T11:00:00',
-    notes: 'ส่งเบิกเข้าระบบ e-Claim สปสช. งวดที่ 12/2569',
-    claimDetails: {
-      claimedCount: 117,
-      claimedAmount: 11270,
-      paidCount: 0,
-      paidAmount: 0,
-      conditionCCount: 4,
-      conditionCAmount: 510,
-      pendingCount: 113,
-      pendingAmount: 10760,
-      batchNumber: 'STM-2570-12-019',
-      claimDate: '2027-01-05',
-      conditionCList: SEED_CONDITION_C.slice(2, 4),
-    },
-  },
-];
+}));
 
 const SEED_AUDIT_LOGS: AuditLog[] = [
   {
@@ -1065,15 +837,58 @@ export class StorageService {
     if (cloudData.settings) this.setItem(STORAGE_KEYS.SETTINGS, cloudData.settings, shouldSync);
   }
 
-  // Reset to initial seed demo
+  // Reset and clear all numbers/counts across the system for fresh user entry
+  public static clearAllNumbers(): void {
+    this.setItem(STORAGE_KEYS.ENTRIES, [], true);
+    this.setItem(STORAGE_KEYS.ROUNDS, [], true);
+
+    const emptyClosings: MonthlyClosing[] = FISCAL_YEAR_2570_MONTHS.map(m => ({
+      id: `cls-${m.key}`,
+      monthKey: m.key,
+      fiscalYear: 2570,
+      status: 'draft',
+      totalCount: 0,
+      totalAmount: 0,
+      statusUpdatedAt: new Date().toISOString(),
+      notes: '',
+      claimDetails: {
+        claimedCount: 0,
+        claimedAmount: 0,
+        paidCount: 0,
+        paidAmount: 0,
+        conditionCCount: 0,
+        conditionCAmount: 0,
+        pendingCount: 0,
+        pendingAmount: 0,
+        conditionCList: [],
+        batchNumber: '',
+        claimDate: '',
+        paidDate: '',
+      },
+    }));
+    this.setItem(STORAGE_KEYS.CLOSINGS, emptyClosings, true);
+
+    const user = this.getCurrentUser();
+    this.setItem(STORAGE_KEYS.AUDIT_LOGS, [
+      {
+        id: `aud-${Date.now()}`,
+        timestamp: new Date().toISOString(),
+        userName: user.name,
+        userRole: user.roleTitle,
+        action: 'ล้างข้อมูลตัวเลขทั้งหมดเพื่อเริ่มต้นคีย์ข้อมูลจริง',
+        entityType: 'status',
+        entityName: 'ระบบส่งเบิก สปสช. ปี 2570',
+        oldValue: 'ข้อมูลตัวอย่างระบบ',
+        newValue: '0 รายการ (พร้อมบันทึกข้อมูลจริง)',
+        details: 'ล้างยอดผู้รับบริการและรายการติด C ทั้งหมดเพื่อเริ่มบันทึกข้อมูลจริง',
+      },
+    ], true);
+
+    this.pushToCentralServer();
+  }
+
+  // Reset to initial seed
   public static resetToSeed(): void {
-    localStorage.removeItem(STORAGE_KEYS.SERVICES);
-    localStorage.removeItem(STORAGE_KEYS.RATES);
-    localStorage.removeItem(STORAGE_KEYS.ROUNDS);
-    localStorage.removeItem(STORAGE_KEYS.ENTRIES);
-    localStorage.removeItem(STORAGE_KEYS.CLOSINGS);
-    localStorage.removeItem(STORAGE_KEYS.AUDIT_LOGS);
-    localStorage.removeItem(STORAGE_KEYS.SETTINGS);
-    this.init();
+    this.clearAllNumbers();
   }
 }

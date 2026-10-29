@@ -59,12 +59,6 @@ export const Navigation: React.FC<NavigationProps> = ({ activeTab, onSelectTab }
       badge: 'ติด C',
     },
     {
-      key: 'export' as TabKey,
-      label: 'นำเข้า / ส่งออก',
-      sublabel: 'Excel & รายงาน PDF',
-      icon: <UploadCloud className="w-4 h-4" />,
-    },
-    {
       key: 'audit' as TabKey,
       label: 'ประวัติการแก้ไข',
       sublabel: 'Audit Log',
