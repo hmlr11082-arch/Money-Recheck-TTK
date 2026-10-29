@@ -8,6 +8,7 @@ import {
   ServiceItem,
   ServiceRate,
   ServiceRound,
+  UnclaimedItem,
   User,
 } from '../types';
 import { FISCAL_YEAR_2570_MONTHS } from '../utils/formatters';
@@ -18,6 +19,7 @@ const STORAGE_KEYS = {
   ROUNDS: 'nhso_rounds_v2',
   ENTRIES: 'nhso_entries_v2',
   CLOSINGS: 'nhso_closings_v2',
+  UNCLAIMED: 'nhso_unclaimed_v2',
   AUDIT_LOGS: 'nhso_audit_logs_v2',
   CURRENT_USER: 'nhso_current_user_v2',
   SETTINGS: 'nhso_settings_v2',
@@ -288,6 +290,7 @@ export class StorageService {
       rounds: this.getRounds(),
       entries: this.getEntries(),
       closings: this.getClosings(),
+      unclaimedItems: this.getUnclaimedItems(),
       auditLogs: this.getAuditLogs(),
       settings: this.getSettings(),
     };
@@ -310,6 +313,7 @@ export class StorageService {
             rounds: payload.rounds?.length,
             entries: payload.entries?.length,
             closings: payload.closings?.length,
+            unclaimed: payload.unclaimedItems?.length,
             rates: payload.rates,
           });
         }
@@ -337,6 +341,7 @@ export class StorageService {
         rounds: remoteData.rounds?.length,
         entries: remoteData.entries?.length,
         closings: remoteData.closings?.length,
+        unclaimed: remoteData.unclaimedItems?.length,
         rates: remoteData.rates,
         lastDate: remoteData.exportDate,
       });
@@ -426,6 +431,9 @@ export class StorageService {
     }
     if (!localStorage.getItem(STORAGE_KEYS.CLOSINGS)) {
       this.setItem(STORAGE_KEYS.CLOSINGS, SEED_CLOSINGS, false);
+    }
+    if (!localStorage.getItem(STORAGE_KEYS.UNCLAIMED)) {
+      this.setItem(STORAGE_KEYS.UNCLAIMED, [], false);
     }
     if (!localStorage.getItem(STORAGE_KEYS.AUDIT_LOGS)) {
       this.setItem(STORAGE_KEYS.AUDIT_LOGS, SEED_AUDIT_LOGS, false);
@@ -807,6 +815,76 @@ export class StorageService {
     }
   }
 
+  // Unclaimed (ไม่ประสงค์เบิก) Items
+  public static getUnclaimedItems(monthKey?: string): UnclaimedItem[] {
+    const items = this.getItem<UnclaimedItem[]>(STORAGE_KEYS.UNCLAIMED, []);
+    if (monthKey && monthKey !== 'all') {
+      return items
+        .filter(item => item.monthKey === monthKey)
+        .sort((a, b) => b.recordedAt.localeCompare(a.recordedAt));
+    }
+    return items.sort((a, b) => b.recordedAt.localeCompare(a.recordedAt));
+  }
+
+  public static saveUnclaimedItem(item: UnclaimedItem): UnclaimedItem {
+    const items = this.getItem<UnclaimedItem[]>(STORAGE_KEYS.UNCLAIMED, []);
+    const idx = items.findIndex(i => i.id === item.id);
+    const user = this.getCurrentUser();
+
+    if (idx >= 0) {
+      const old = items[idx];
+      items[idx] = item;
+      this.logAudit({
+        userName: user.name,
+        userRole: user.roleTitle,
+        action: 'แก้ไขรายการไม่ประสงค์เบิก',
+        entityType: 'unclaimed',
+        entityName: `HN ${item.hn} (${item.fund})`,
+        oldValue: `${old.amount.toLocaleString()} บาท (${old.reason})`,
+        newValue: `${item.amount.toLocaleString()} บาท (${item.reason})`,
+        details: `เดือน ${item.monthKey}`,
+      });
+    } else {
+      items.push(item);
+      this.logAudit({
+        userName: user.name,
+        userRole: user.roleTitle,
+        action: 'บันทึกรายการไม่ประสงค์เบิก',
+        entityType: 'unclaimed',
+        entityName: `HN ${item.hn} (${item.fund})`,
+        oldValue: '-',
+        newValue: `${item.amount.toLocaleString()} บาท (${item.reason})`,
+        details: `เดือน ${item.monthKey}`,
+      });
+    }
+
+    this.setItem(STORAGE_KEYS.UNCLAIMED, items);
+    this.notifyUpdate();
+    return item;
+  }
+
+  public static deleteUnclaimedItem(id: string): void {
+    const items = this.getItem<UnclaimedItem[]>(STORAGE_KEYS.UNCLAIMED, []);
+    const target = items.find(i => i.id === id);
+    const filtered = items.filter(i => i.id !== id);
+    this.setItem(STORAGE_KEYS.UNCLAIMED, filtered);
+
+    if (target) {
+      const user = this.getCurrentUser();
+      this.logAudit({
+        userName: user.name,
+        userRole: user.roleTitle,
+        action: 'ลบรายการไม่ประสงค์เบิก',
+        entityType: 'unclaimed',
+        entityName: `HN ${target.hn} (${target.fund})`,
+        oldValue: `${target.amount.toLocaleString()} บาท`,
+        newValue: 'ลบรายการ',
+        details: `เดือน ${target.monthKey}`,
+      });
+    }
+    this.notifyUpdate();
+  }
+
   // Audit Logs
   public static getAuditLogs(): AuditLog[] {
     const logs = this.getItem<AuditLog[]>(STORAGE_KEYS.AUDIT_LOGS, SEED_AUDIT_LOGS);
@@ -833,6 +911,7 @@ export class StorageService {
     if (cloudData.rounds) this.setItem(STORAGE_KEYS.ROUNDS, cloudData.rounds, shouldSync);
     if (cloudData.entries) this.setItem(STORAGE_KEYS.ENTRIES, cloudData.entries, shouldSync);
     if (cloudData.closings) this.setItem(STORAGE_KEYS.CLOSINGS, cloudData.closings, shouldSync);
+    if (cloudData.unclaimedItems) this.setItem(STORAGE_KEYS.UNCLAIMED, cloudData.unclaimedItems, shouldSync);
     if (cloudData.auditLogs) this.setItem(STORAGE_KEYS.AUDIT_LOGS, cloudData.auditLogs, shouldSync);
     if (cloudData.settings) this.setItem(STORAGE_KEYS.SETTINGS, cloudData.settings, shouldSync);
   }
@@ -841,6 +920,7 @@ export class StorageService {
   public static clearAllNumbers(): void {
     this.setItem(STORAGE_KEYS.ENTRIES, [], true);
     this.setItem(STORAGE_KEYS.ROUNDS, [], true);
+    this.setItem(STORAGE_KEYS.UNCLAIMED, [], true);
 
     const emptyClosings: MonthlyClosing[] = FISCAL_YEAR_2570_MONTHS.map(m => ({
       id: `cls-${m.key}`,
@@ -880,7 +960,7 @@ export class StorageService {
         entityName: 'ระบบส่งเบิก สปสช. ปี 2570',
         oldValue: 'ข้อมูลตัวอย่างระบบ',
         newValue: '0 รายการ (พร้อมบันทึกข้อมูลจริง)',
-        details: 'ล้างยอดผู้รับบริการและรายการติด C ทั้งหมดเพื่อเริ่มบันทึกข้อมูลจริง',
+        details: 'ล้างยอดผู้รับบริการ รายการติด C และรายการไม่ประสงค์เบิกทั้งหมดเพื่อเริ่มบันทึกข้อมูลจริง',
       },
     ], true);
 
@@ -892,3 +972,4 @@ export class StorageService {
     this.clearAllNumbers();
   }
 }
+

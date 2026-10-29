@@ -3,11 +3,11 @@ import {
   BarChart3,
   CalendarDays,
   FileSpreadsheet,
+  FileX2,
   History,
   PenLine,
   Receipt,
   Settings,
-  UploadCloud,
 } from 'lucide-react';
 
 export type TabKey =
@@ -16,6 +16,7 @@ export type TabKey =
   | 'monthly'
   | 'annual'
   | 'claims'
+  | 'unclaimed'
   | 'export'
   | 'audit'
   | 'settings';
@@ -57,6 +58,12 @@ export const Navigation: React.FC<NavigationProps> = ({ activeTab, onSelectTab }
       sublabel: 'ติด C / ได้รับเงินแล้ว',
       icon: <Receipt className="w-4 h-4" />,
       badge: 'ติด C',
+    },
+    {
+      key: 'unclaimed' as TabKey,
+      label: 'ไม่ประสงค์เบิก',
+      sublabel: 'HN / กองทุน / ค่าใช้จ่าย',
+      icon: <FileX2 className="w-4 h-4" />,
     },
     {
       key: 'audit' as TabKey,

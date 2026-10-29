@@ -13,6 +13,7 @@ import { DashboardPage } from './pages/DashboardPage';
 import { MonthlySummaryPage } from './pages/MonthlySummaryPage';
 import { RoundEntryPage } from './pages/RoundEntryPage';
 import { SettingsPage } from './pages/SettingsPage';
+import { UnclaimedPage } from './pages/UnclaimedPage';
 import { StorageService } from './services/storage';
 import { User } from './types';
 
@@ -103,6 +104,16 @@ export default function App() {
             key={refreshKey}
             currentUser={currentUser}
             onSelectMonth={setCurrentMonthKey}
+            onNavigateTab={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'unclaimed' && (
+          <UnclaimedPage
+            key={refreshKey}
+            currentMonthKey={currentMonthKey}
+            onSelectMonth={setCurrentMonthKey}
+            currentUser={currentUser}
             onNavigateTab={setActiveTab}
           />
         )}

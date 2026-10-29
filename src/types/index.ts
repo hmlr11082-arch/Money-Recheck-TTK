@@ -102,13 +102,25 @@ export interface MonthlyClosing {
   };
 }
 
+export interface UnclaimedItem {
+  id: string;
+  monthKey: string;      // เช่น "2569-10"
+  serviceDate?: string;  // วันที่รับบริการ (YYYY-MM-DD)
+  hn: string;            // HN ผู้ป่วย
+  fund: string;          // กองทุน
+  amount: number;        // ยอดค่าใช้จ่าย (บาท)
+  reason: string;        // เหตุผลที่ไม่ประสงค์เบิก
+  recordedBy: string;    // ผู้บันทึก
+  recordedAt: string;    // วันเวลาที่บันทึก
+}
+
 export interface AuditLog {
   id: string;
   timestamp: string;
   userName: string;
   userRole: string;
   action: string; // เช่น "บันทึกจำนวนคน", "เปลี่ยนสถานะ", "แก้ไขอัตราเบิก"
-  entityType: 'entry' | 'round' | 'rate' | 'status' | 'service';
+  entityType: 'entry' | 'round' | 'rate' | 'status' | 'service' | 'unclaimed';
   entityName: string;
   oldValue: string;
   newValue: string;
