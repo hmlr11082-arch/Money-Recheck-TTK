@@ -83,10 +83,41 @@ export class GoogleDriveService {
     return { ...currentSyncStatus };
   }
 
+  public static async fetchCentralDriveStatus(): Promise<void> {
+    try {
+      const res = await fetch('/api/drive-status');
+      if (res.ok) {
+        const json = await res.json();
+        if (json.success && json.status) {
+          const s = json.status;
+          currentSyncStatus = {
+            ...currentSyncStatus,
+            isConnected: true,
+            userEmail: s.userEmail || 'hmlr11082@gmail.com',
+            userName: s.userName || 'โรงพยาบาลท่าคันโท (ศูนย์ข้อมูล สปสช.)',
+            folderName: s.folderName || DRIVE_FOLDER_NAME,
+            fileName: s.fileName || DRIVE_FILE_NAME,
+            lastSyncedAt: s.lastSyncedAt || currentSyncStatus.lastSyncedAt || new Date().toISOString(),
+          };
+          notifyListeners();
+        }
+      }
+    } catch {
+      // offline fallback
+    }
+  }
+
+  public static hasValidToken(): boolean {
+    return !!cachedAccessToken;
+  }
+
   public static initAuth(
     onAuthSuccess?: (user: FirebaseUser, token: string) => void,
     onAuthFailure?: () => void
   ) {
+    // Immediately load central persistent Drive status for all devices
+    this.fetchCentralDriveStatus();
+
     return onAuthStateChanged(auth, async (user: FirebaseUser | null) => {
       if (user && cachedAccessToken) {
         currentSyncStatus = {
@@ -100,14 +131,7 @@ export class GoogleDriveService {
         notifyListeners();
         if (onAuthSuccess) onAuthSuccess(user, cachedAccessToken);
       } else {
-        currentSyncStatus = {
-          ...currentSyncStatus,
-          isConnected: false,
-          userEmail: user ? user.email : null,
-          userName: user ? user.displayName : null,
-          userPhoto: user ? user.photoURL : null,
-        };
-        notifyListeners();
+        await this.fetchCentralDriveStatus();
         if (onAuthFailure) onAuthFailure();
       }
     });
@@ -137,7 +161,27 @@ export class GoogleDriveService {
       };
       notifyListeners();
 
-      // Automatically sync or load data after sign in
+      // Automatically update central persistent Drive status on server
+      try {
+        await fetch('/api/drive-status', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            status: {
+              isPermanentlyLinked: true,
+              userEmail: result.user.email || 'hmlr11082@gmail.com',
+              userName: result.user.displayName || 'โรงพยาบาลท่าคันโท (ศูนย์ข้อมูล สปสช.)',
+              folderName: DRIVE_FOLDER_NAME,
+              fileName: DRIVE_FILE_NAME,
+              lastSyncedAt: new Date().toISOString(),
+            },
+          }),
+        });
+      } catch (err) {
+        console.warn('Central drive status update error:', err);
+      }
+
+      // Automatically sync data to Drive after sign in
       try {
         await this.syncToDrive();
       } catch (err: any) {
@@ -367,6 +411,24 @@ export class GoogleDriveService {
       };
       notifyListeners();
 
+      // Update central server drive status
+      try {
+        await fetch('/api/drive-status', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            status: {
+              isPermanentlyLinked: true,
+              userEmail: currentSyncStatus.userEmail || 'hmlr11082@gmail.com',
+              userName: currentSyncStatus.userName || 'โรงพยาบาลท่าคันโท (ศูนย์ข้อมูล สปสช.)',
+              folderName: DRIVE_FOLDER_NAME,
+              fileName: DRIVE_FILE_NAME,
+              lastSyncedAt: nowStr,
+            },
+          }),
+        });
+      } catch {}
+
       return { success: true, fileId: fileId! };
     } catch (err: any) {
       console.error('Error syncing to Drive:', err);
@@ -424,8 +486,8 @@ export class GoogleDriveService {
         throw new Error('รูปแบบไฟล์บน Google Drive ไม่ถูกต้อง');
       }
 
-      // Restore data to StorageService
-      StorageService.restoreFromCloudData(data);
+      // Restore data to StorageService and push to central server
+      StorageService.restoreFromCloudData(data, true);
 
       const nowStr = new Date().toISOString();
       localStorage.setItem(LAST_SYNC_KEY, nowStr);

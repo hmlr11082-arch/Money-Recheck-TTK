@@ -1,0 +1,53 @@
+{
+  "entities": {
+    "HospitalData": {
+      "title": "HospitalData",
+      "description": "Comprehensive NHSO Claim Tracking data for Hospital Thakantho",
+      "type": "object",
+      "properties": {
+        "services": {
+          "type": "array",
+          "description": "List of healthcare service items"
+        },
+        "rates": {
+          "type": "array",
+          "description": "Approved reimbursement rates per service"
+        },
+        "rounds": {
+          "type": "array",
+          "description": "Rounds of service recorded in FY 2570"
+        },
+        "entries": {
+          "type": "array",
+          "description": "Patient counts per round and service"
+        },
+        "closings": {
+          "type": "array",
+          "description": "Monthly summary closing and claim statuses"
+        },
+        "auditLogs": {
+          "type": "array",
+          "description": "Audit trails of changes and approvals"
+        },
+        "settings": {
+          "type": "object",
+          "description": "Hospital profile and system settings"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "ISO timestamp of last update"
+        },
+        "updatedBy": {
+          "type": "string",
+          "description": "Name or email of staff who updated data"
+        }
+      }
+    }
+  },
+  "firestore": {
+    "/hospitals/{hospitalId}/nhso_2570/{documentId}": {
+      "schema": "HospitalData",
+      "description": "Real-time Google Cloud data collection for Hospital Thakantho"
+    }
+  }
+}

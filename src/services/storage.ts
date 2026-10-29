@@ -479,8 +479,144 @@ const DEFAULT_SETTINGS: AppSettings = {
   anomalyMultiplier: 3,
 };
 
-// Safe localStorage wrapper
+// Safe localStorage wrapper with Central Server real-time sync
 export class StorageService {
+  private static syncListeners: Array<() => void> = [];
+  private static lastRemoteHash: string = '';
+  private static syncTimeout: any = null;
+  private static isSyncingWithServer: boolean = false;
+  private static syncIntervalStarted: boolean = false;
+
+  public static subscribeToUpdates(listener: () => void): () => void {
+    this.syncListeners.push(listener);
+    return () => {
+      const idx = this.syncListeners.indexOf(listener);
+      if (idx !== -1) this.syncListeners.splice(idx, 1);
+    };
+  }
+
+  private static notifyUpdate(): void {
+    this.syncListeners.forEach(fn => {
+      try {
+        fn();
+      } catch (err) {
+        console.error('Error in sync listener:', err);
+      }
+    });
+  }
+
+  public static getAllData(): any {
+    return {
+      version: 2,
+      exportDate: new Date().toISOString(),
+      hospitalName: 'โรงพยาบาลท่าคันโท',
+      fiscalYear: 2570,
+      services: this.getServices(),
+      rates: this.getRates(),
+      rounds: this.getRounds(),
+      entries: this.getEntries(),
+      closings: this.getClosings(),
+      auditLogs: this.getAuditLogs(),
+      settings: this.getSettings(),
+    };
+  }
+
+  public static pushToCentralServer(): void {
+    if (this.isSyncingWithServer) return;
+    if (this.syncTimeout) clearTimeout(this.syncTimeout);
+
+    this.syncTimeout = setTimeout(async () => {
+      try {
+        const payload = this.getAllData();
+        const res = await fetch('/api/central-db', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ data: payload }),
+        });
+        if (res.ok) {
+          this.lastRemoteHash = JSON.stringify({
+            rounds: payload.rounds?.length,
+            entries: payload.entries?.length,
+            closings: payload.closings?.length,
+            rates: payload.rates,
+          });
+        }
+      } catch (e) {
+        console.warn('Central server sync offline/skipped:', e);
+      }
+    }, 350);
+  }
+
+  public static async pullFromCentralServer(force = false): Promise<boolean> {
+    try {
+      const res = await fetch('/api/central-db');
+      if (!res.ok) return false;
+      const json = await res.json();
+      if (!json.success) return false;
+
+      // If server has no data yet, push local seed data to populate it!
+      if (!json.data) {
+        this.pushToCentralServer();
+        return false;
+      }
+
+      const remoteData = json.data;
+      const currentHash = JSON.stringify({
+        rounds: remoteData.rounds?.length,
+        entries: remoteData.entries?.length,
+        closings: remoteData.closings?.length,
+        rates: remoteData.rates,
+        lastDate: remoteData.exportDate,
+      });
+
+      if (!force && currentHash === this.lastRemoteHash) {
+        return false; // No changes detected
+      }
+
+      this.lastRemoteHash = currentHash;
+      this.isSyncingWithServer = true;
+      try {
+        this.restoreFromCloudData(remoteData, false);
+      } finally {
+        this.isSyncingWithServer = false;
+      }
+      this.notifyUpdate();
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  public static initCentralSync(): void {
+    if (this.syncIntervalStarted) return;
+    this.syncIntervalStarted = true;
+
+    // Initial pull from central database
+    this.pullFromCentralServer().then(updated => {
+      if (updated) this.notifyUpdate();
+    });
+
+    // Regular polling every 5 seconds for cross-device shared updates
+    setInterval(() => {
+      this.pullFromCentralServer();
+    }, 5000);
+
+    // Pull when tab gets focus or becomes visible
+    if (typeof window !== 'undefined') {
+      window.addEventListener('focus', () => {
+        this.pullFromCentralServer();
+      });
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+          this.pullFromCentralServer();
+        }
+      });
+      window.addEventListener('storage', () => {
+        this.notifyUpdate();
+      });
+    }
+  }
+
   private static getItem<T>(key: string, defaultValue: T): T {
     try {
       const item = localStorage.getItem(key);
@@ -491,9 +627,12 @@ export class StorageService {
     }
   }
 
-  private static setItem<T>(key: string, value: T): void {
+  private static setItem<T>(key: string, value: T, sync = true): void {
     try {
       localStorage.setItem(key, JSON.stringify(value));
+      if (sync && key !== STORAGE_KEYS.CURRENT_USER) {
+        this.pushToCentralServer();
+      }
     } catch (e) {
       console.error('Failed to save to localStorage:', e);
     }
@@ -502,31 +641,34 @@ export class StorageService {
   // Initializer
   public static init(): void {
     if (!localStorage.getItem(STORAGE_KEYS.SERVICES)) {
-      this.setItem(STORAGE_KEYS.SERVICES, SEED_SERVICES);
+      this.setItem(STORAGE_KEYS.SERVICES, SEED_SERVICES, false);
     }
     if (!localStorage.getItem(STORAGE_KEYS.RATES)) {
-      this.setItem(STORAGE_KEYS.RATES, SEED_RATES);
+      this.setItem(STORAGE_KEYS.RATES, SEED_RATES, false);
     }
     if (!localStorage.getItem(STORAGE_KEYS.ROUNDS)) {
-      this.setItem(STORAGE_KEYS.ROUNDS, SEED_ROUNDS);
+      this.setItem(STORAGE_KEYS.ROUNDS, SEED_ROUNDS, false);
     }
     if (!localStorage.getItem(STORAGE_KEYS.ENTRIES)) {
-      this.setItem(STORAGE_KEYS.ENTRIES, SEED_ENTRIES);
+      this.setItem(STORAGE_KEYS.ENTRIES, SEED_ENTRIES, false);
     }
     if (!localStorage.getItem(STORAGE_KEYS.CLOSINGS)) {
-      this.setItem(STORAGE_KEYS.CLOSINGS, SEED_CLOSINGS);
+      this.setItem(STORAGE_KEYS.CLOSINGS, SEED_CLOSINGS, false);
     }
     if (!localStorage.getItem(STORAGE_KEYS.AUDIT_LOGS)) {
-      this.setItem(STORAGE_KEYS.AUDIT_LOGS, SEED_AUDIT_LOGS);
+      this.setItem(STORAGE_KEYS.AUDIT_LOGS, SEED_AUDIT_LOGS, false);
     }
     const storedUser = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
     if (!storedUser || storedUser.includes('สมชาย') || storedUser.includes('user-rec-1')) {
-      this.setItem(STORAGE_KEYS.CURRENT_USER, MOCK_USERS[0]); // default to นางสาวณัฐนันท์ สีตะ (Admin)
+      this.setItem(STORAGE_KEYS.CURRENT_USER, MOCK_USERS[0], false); // default to นางสาวณัฐนันท์ สีตะ (Admin)
     }
     const storedSettings = localStorage.getItem(STORAGE_KEYS.SETTINGS);
     if (!storedSettings || storedSettings.includes('ชุมชนโมเดล') || storedSettings.includes('ประจำตำบล')) {
-      this.setItem(STORAGE_KEYS.SETTINGS, DEFAULT_SETTINGS);
+      this.setItem(STORAGE_KEYS.SETTINGS, DEFAULT_SETTINGS, false);
     }
+
+    // Start central server sync
+    this.initCentralSync();
   }
 
   // Users & Role
@@ -913,14 +1055,14 @@ export class StorageService {
   }
 
   // Restore from Cloud / Google Drive
-  public static restoreFromCloudData(cloudData: any): void {
-    if (cloudData.services) this.setItem(STORAGE_KEYS.SERVICES, cloudData.services);
-    if (cloudData.rates) this.setItem(STORAGE_KEYS.RATES, cloudData.rates);
-    if (cloudData.rounds) this.setItem(STORAGE_KEYS.ROUNDS, cloudData.rounds);
-    if (cloudData.entries) this.setItem(STORAGE_KEYS.ENTRIES, cloudData.entries);
-    if (cloudData.closings) this.setItem(STORAGE_KEYS.CLOSINGS, cloudData.closings);
-    if (cloudData.auditLogs) this.setItem(STORAGE_KEYS.AUDIT_LOGS, cloudData.auditLogs);
-    if (cloudData.settings) this.setItem(STORAGE_KEYS.SETTINGS, cloudData.settings);
+  public static restoreFromCloudData(cloudData: any, shouldSync = false): void {
+    if (cloudData.services) this.setItem(STORAGE_KEYS.SERVICES, cloudData.services, shouldSync);
+    if (cloudData.rates) this.setItem(STORAGE_KEYS.RATES, cloudData.rates, shouldSync);
+    if (cloudData.rounds) this.setItem(STORAGE_KEYS.ROUNDS, cloudData.rounds, shouldSync);
+    if (cloudData.entries) this.setItem(STORAGE_KEYS.ENTRIES, cloudData.entries, shouldSync);
+    if (cloudData.closings) this.setItem(STORAGE_KEYS.CLOSINGS, cloudData.closings, shouldSync);
+    if (cloudData.auditLogs) this.setItem(STORAGE_KEYS.AUDIT_LOGS, cloudData.auditLogs, shouldSync);
+    if (cloudData.settings) this.setItem(STORAGE_KEYS.SETTINGS, cloudData.settings, shouldSync);
   }
 
   // Reset to initial seed demo

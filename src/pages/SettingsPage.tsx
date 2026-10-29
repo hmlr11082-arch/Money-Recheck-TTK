@@ -222,34 +222,33 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
   const handleDriveSyncNow = async () => {
     try {
       setIsDriveSyncing(true);
-      await GoogleDriveService.syncToDrive();
-      alert('บันทึกข้อมูลทุกตารางขึ้น Google Drive สำเร็จเรียบร้อยแล้ว!');
+      StorageService.pushToCentralServer();
+      if (GoogleDriveService.hasValidToken()) {
+        await GoogleDriveService.syncToDrive();
+      }
+      await StorageService.pullFromCentralServer(true);
+      alert('บันทึกและซิงค์ข้อมูลส่วนกลางและ Google Drive เรียบร้อยแล้ว!');
+      if (onRefreshData) onRefreshData();
     } catch (err: any) {
       console.error(err);
-      alert('การบันทึกข้อมูลขึ้น Google Drive ล้มเหลว: ' + (err?.message || 'กรุณาลองใหม่อีกครั้ง'));
+      alert('การบันทึกข้อมูลล้มเหลว: ' + (err?.message || 'กรุณาลองใหม่อีกครั้ง'));
     } finally {
       setIsDriveSyncing(false);
     }
   };
 
   const handleDrivePullNow = async () => {
-    if (
-      !window.confirm(
-        'คุณต้องการดึงข้อมูลล่าสุดจาก Google Drive มาบันทึกทับข้อมูลในเครื่องนี้ใช่หรือไม่?\n\n(แนะนำใช้เมื่อเริ่มใช้งานเครื่องใหม่หรือเปลี่ยนอุปกรณ์ เพื่อให้ได้ข้อมูลที่คีย์ไว้ล่าสุดตรงกัน)'
-      )
-    ) {
-      return;
-    }
     try {
       setIsDriveSyncing(true);
-      const success = await GoogleDriveService.pullFromDrive();
-      if (success) {
-        setRefreshKey(prev => prev + 1);
-        if (onRefreshData) onRefreshData();
-        alert('ดึงข้อมูลจาก Google Drive สำเร็จ! ข้อมูลทุกรายการในระบบเป็นปัจจุบันแล้ว');
+      await StorageService.pullFromCentralServer(true);
+      if (GoogleDriveService.hasValidToken()) {
+        const res = await GoogleDriveService.pullFromDrive();
+        alert(`ดึงข้อมูลจาก Google Drive สำเร็จ: ${res.roundsCount} รอบบริการ, ${res.entriesCount} รายการย่อย ข้อมูลทุกตารางได้รับการอัปเดตเป็นปัจจุบันแล้ว`);
       } else {
-        alert('ยังไม่พบไฟล์ฐานข้อมูลใน Google Drive หรือไม่สามารถดาวน์โหลดได้');
+        alert('ดึงข้อมูลล่าสุดจากฐานข้อมูลกลางเรียบร้อยแล้ว ทุกอุปกรณ์ใช้งานข้อมูลตรงกันทันที');
       }
+      setRefreshKey(prev => prev + 1);
+      if (onRefreshData) onRefreshData();
     } catch (err: any) {
       console.error(err);
       alert('เกิดข้อผิดพลาดในการดึงข้อมูล: ' + (err?.message || 'กรุณาลองใหม่อีกครั้ง'));

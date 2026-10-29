@@ -1,0 +1,32 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /hospitals/{hospitalId}/{allPaths=**} {
+      allow read, write: if true;
+    }
+    match /system/{allPaths=**} {
+      allow read, write: if true;
+    }
+    match /services/{serviceId} {
+      allow read, write: if true;
+    }
+    match /rates/{rateId} {
+      allow read, write: if true;
+    }
+    match /rounds/{roundId} {
+      allow read, write: if true;
+    }
+    match /entries/{entryId} {
+      allow read, write: if true;
+    }
+    match /closings/{closingId} {
+      allow read, write: if true;
+    }
+    match /audit_logs/{logId} {
+      allow read, write: if true;
+    }
+    match /settings/{settingId} {
+      allow read, write: if true;
+    }
+  }
+}

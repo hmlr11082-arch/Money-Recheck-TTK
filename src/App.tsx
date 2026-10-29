@@ -40,6 +40,14 @@ export default function App() {
     setActiveTab('monthly');
   };
 
+  useEffect(() => {
+    // Subscribe to multi-device real-time sync updates
+    const unsubscribe = StorageService.subscribeToUpdates(() => {
+      setRefreshKey(prev => prev + 1);
+    });
+    return () => unsubscribe();
+  }, []);
+
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col font-['Sarabun',sans-serif] selection:bg-blue-100 selection:text-blue-900">
